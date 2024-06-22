@@ -2,6 +2,8 @@ package aed;
 
 public class SistemaSIU {
 
+    ArbolTrie lu;
+
     enum CargoDocente{
         AY2,
         AY1,
