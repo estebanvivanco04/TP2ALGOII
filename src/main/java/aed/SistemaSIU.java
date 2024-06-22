@@ -1,12 +1,17 @@
 package aed;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class SistemaSIU {
 
     private ArbolTrie lu; // cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando.
 
     private ArbolTrie libretasArbolTrie;
     private ArbolTrie materiasArbolTrie;
-    private Tuple<String,Carrera, Integer> Alumno;
+    private dict<String,Alumno> luAAlumno;
+    private dict<String,Int> cantidadDeInscriptosMateria;
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
 
@@ -23,12 +28,15 @@ public class SistemaSIU {
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
-        this.libretasArbolTrie.agregar(estudiante);
-        this.estudiantesArbolTrie.agregar()
+        if (this.libretasArbolTrie.buscar(estudiante) == True){
+            this.AlumnoActual = estudiante;
+        }
+        else {
+            nuevoAlumno = new Alumno(estudiante,carrera,0);
+            this.libretasArbolTrie.agregar(estudiante)
+        }
 
-    }
-    public Integer cantidadMateriasEstudiante(String estudiante){
-        this.estudiantesArbolTrie.estudiante()
+
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
@@ -52,15 +60,35 @@ public class SistemaSIU {
     }
 
     public String[] carreras(){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        Set<String> todasLasCarreras = new HashSet<>();
+        for(ParCarreraMateria par : this.infoMaterias){
+            String carreraActual = par.getCarrera();
+            if (!todasLasCarreras.contains(carreraActual)){
+                todasLasCarreras.add(carreraActual);
+            }
+        }
+        return todasLasCarreras.toArray(new String[0]);	    
+    }
+    public Boolean pertence(T[] s, T e) {
+        for( T t : s){
+            if (t == e){
+                return True;
+            }
+        }
+        return False;
     }
 
     public String[] materias(String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        Set<String> todasLasMaterias = new HashSet<>();
+        for(ParCarreraMateria par : this.infoMaterias){
+            if (carrera == par.getCarrera()){
+                todasLasMaterias.add(par.getNombreMateria());
+            }
+        }
+        return todasLasCarreras.toArray(new String[0]);;	    
     }
 
     public int materiasInscriptas(String estudiante){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        ;	    
     }
-
 }

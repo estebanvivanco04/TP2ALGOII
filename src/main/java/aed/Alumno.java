@@ -12,15 +12,15 @@ public class Alumno {
     }
     
     public int getlu() {
-        return numeroLibreta;
+        return this.lu;
     }
 
     public String getCarrera() {
-        return carrera;
+        return this.carrera;
     }
 
     public int getCantMat() {
-        return cantidadMaterias; 
+        return this.cantidadMat; 
     }
 
     public void sumarMateria() {
