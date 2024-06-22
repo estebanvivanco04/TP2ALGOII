@@ -9,9 +9,10 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     private ArbolTrie libretasArbolTrie;
     private ArbolTrie materiasArbolTrie;
     private dict<String,Alumno> luAAlumno;
-    private dict<String,Int> cantidadDeInscriptosMateria;
+    private dict<String,Materia> datosMateria;
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
+    private CargoDocente docente;
 
     enum CargoDocente{
         AY2,
@@ -34,12 +35,11 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
             nuevoAlumno = new Alumno(estudiante,carrera,0);
             this.luAAlumno[estudiante] = nuevoAlumno;
             this.luAAlumno[estudiante].sumarMateria();
+            this.cantidadDeInscriptosMateria[materia] = new Materia(0, this.docentes , 0, this.ListaMaterias);
             this.cantidadDeInscriptosMateria[materia].sumarMateria();
             this.materiasArbolTrie.agregar(materia);
             this.libretasArbolTrie.agregar(estudiante);
         }
-
-
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
@@ -59,7 +59,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public boolean excedeCupo(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        if (datosMateria[materia].cupo() )	    
     }
 
     public String[] carreras(){
