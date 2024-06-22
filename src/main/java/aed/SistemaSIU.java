@@ -2,7 +2,13 @@ package aed;
 
 public class SistemaSIU {
 
-    ArbolTrie lu;
+    private ArbolTrie lu; // cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando.
+
+    private ArbolTrie libretasArbolTrie;
+    private ArbolTrie materiasArbolTrie;
+    private Tuple<String,Carrera, Integer> Alumno;
+    private InfoMateria[] ListaMaterias;
+    private String[] ListalibretasUniversitarias;
 
     enum CargoDocente{
         AY2,
@@ -12,12 +18,17 @@ public class SistemaSIU {
     }
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
-        infoMaterias = null;
-        libretasUniversitarias = null;	    
+        this.ListaMaterias = infoMaterias;
+        this.ListalibretasUniversitarias = libretasUniversitarias;
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        this.libretasArbolTrie.agregar(estudiante);
+        this.estudiantesArbolTrie.agregar()
+
+    }
+    public Integer cantidadMateriasEstudiante(String estudiante){
+        this.estudiantesArbolTrie.estudiante()
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
