@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SistemaSIU {
-
-    private ArbolTrie lu; // cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando.
+public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando.
 
     private ArbolTrie libretasArbolTrie;
     private ArbolTrie materiasArbolTrie;
@@ -29,11 +27,16 @@ public class SistemaSIU {
 
     public void inscribir(String estudiante, String carrera, String materia){
         if (this.libretasArbolTrie.buscar(estudiante) == True){
-            this.AlumnoActual = estudiante;
+            this.luAAlumno[estudiante].sumarMateria();
+            this.cantidadDeInscriptosMateria[materia].sumarInsciptos();
         }
         else {
             nuevoAlumno = new Alumno(estudiante,carrera,0);
-            this.libretasArbolTrie.agregar(estudiante)
+            this.luAAlumno[estudiante] = nuevoAlumno;
+            this.luAAlumno[estudiante].sumarMateria();
+            this.cantidadDeInscriptosMateria[materia].sumarMateria();
+            this.materiasArbolTrie.agregar(materia);
+            this.libretasArbolTrie.agregar(estudiante);
         }
 
 
