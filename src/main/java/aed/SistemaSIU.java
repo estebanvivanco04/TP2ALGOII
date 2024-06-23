@@ -25,14 +25,15 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public void agregoMateriasYLUs(){
-        for (InfoMateria materia : this.ListaMaterias){ // hay que meter todos los LU y todas las materias con las que se inicializa el SIU en los arboles Tries respectivos.
-            this.materiasArbolTrie.agregar(materia, ); // cuando los metemos no importa mucho los datos, como los docentes y eso, despues los vamos agregando, pero tienen que estar.
+        for (InfoMateria materia : this.ListaMaterias){
+            Materia nuevaMateria = new Materia(0, new int[]{0}, 0, this.ListaMaterias); // hay que meter todos los LU y todas las materias con las que se inicializa el SIU en los arboles Tries respectivos.
+            this.materiasArbolTrie.agregar(materia.toString(), nuevaMateria); // cuando los metemos no importa mucho los datos, como los docentes y eso, despues los vamos agregando, pero tienen que estar.
         }
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
         Alumno existeAlumno = this.libretasArbolTrie.buscar(estudiante);
-        if (existeAlumno != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
+        if (existeAlumno != null && existeAlumno.getCarrera() != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
             existeAlumno.sumarMateria();
         }
         else {
