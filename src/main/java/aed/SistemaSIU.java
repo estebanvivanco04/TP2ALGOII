@@ -6,10 +6,8 @@ import java.util.Set;
 
 public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando. 
 
-    private ArbolTrie libretasArbolTrie;
-    private ArbolTrie materiasArbolTrie;
-    private dict<String,Alumno> luAAlumno = new dict<>(0);
-    private dict<String,Materia> datosMateria;
+    private TrieNigga libretasArbolTrie = new TrieNigga<>();
+    private TrieNigga materiasArbolTrie;
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
     private CargoDocente docente;
@@ -27,18 +25,13 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
-        if (this.libretasArbolTrie.buscar(estudiante) ==  true){
-            this.luAAlumno[estudiante].sumarMateria();
-            this.cantidadDeInscriptosMateria[materia].sumarInsciptos();
+        Alumno existeAlumno = this.libretasArbolTrie.buscar(estudiante);
+        if (existeAlumno != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
+            existeAlumno.sumarMateria();
         }
         else {
-            nuevoAlumno = new Alumno(estudiante,carrera,0);
-            this.luAAlumno[estudiante] = nuevoAlumno;
-            this.luAAlumno[estudiante].sumarMateria();
-            this.cantidadDeInscriptosMateria[materia] = new Materia(0, this.docentes , 0, this.ListaMaterias);
-            this.cantidadDeInscriptosMateria[materia].sumarMateria();
-            this.materiasArbolTrie.agregar(materia);
-            this.libretasArbolTrie.agregar(estudiante);
+            Alumno nuevoAlumno = new Alumno(estudiante, carrera, 1);
+            this.libretasArbolTrie.agregar(estudiante, nuevoAlumno);
         }
     }
 
@@ -59,7 +52,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public boolean excedeCupo(String materia, String carrera){
-        if (datosMateria[materia].cupo() )	    
+        throw new UnsupportedOperationException("Método no implementado aún");	    
     }
 
     public String[] carreras(){
@@ -74,13 +67,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public String[] materias(String carrera){
-        Set<String> todasLasMaterias = new HashSet<>();
-        for(ParCarreraMateria par : this.ListaMaterias){
-            if (carrera == par.getCarrera()){
-                todasLasMaterias.add(par.getNombreMateria());
-            }
-        }
-        return ListaMaterias.toArray(new String[0]);;	    
+        	    
     }
 
     public int materiasInscriptas(String estudiante){
