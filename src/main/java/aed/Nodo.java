@@ -20,7 +20,7 @@ package aed;
         return this.info;
     }
 
-    protected Nodo<T> getSig(){        
+    protected Nodo<T> getSig(){
         return this.sig;        
     }
 
