@@ -16,13 +16,8 @@ public class Carrera {
     }
 
 
-    public agregarMateria(Materia materia) {
-        this.materiasDeLaCarrera.agregar(materia);
-    }
-
-    public int cantidadDeMaterias() {
-
+    public void agregarMateria(String nombreMateria, Materia materia) {
+        this.materiasDeLaCarrera.agregar(nombreMateria, materia);
     }
     
-    public 
 }

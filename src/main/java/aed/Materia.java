@@ -7,9 +7,9 @@ public class Materia {
     private int cupo;
     private int[] docentes;
     private int cantInscriptos;
-    private InfoMateria[] infoMateria; 
+    private InfoMateria infoMateria; 
     
-    public Materia(int cupo, int[] docentes, int cantInscriptos, InfoMateria[] infoMaterias) {
+    public Materia(int cupo, int[] docentes, int cantInscriptos, InfoMateria infoMaterias) {
         this.cupo = cupo;
         this.docentes = docentes;
         this.cantInscriptos = cantInscriptos;
@@ -45,7 +45,7 @@ public class Materia {
         docentes[cargo] += 1; // le sumo un docente, del tipo cargo, hay 4 tipos de cargo, 0 1 2 y 3. estan en docentes enum en SISTEMASIU
     }
 
-    public InfoMateria[] getInfoMateria() {
+    public InfoMateria getInfoMateria() {
         return  this.infoMateria;
     }
 

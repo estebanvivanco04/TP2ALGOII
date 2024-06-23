@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando. 
 
-    private Trie<Alumno> libretasArbolTrie; // cada rama es una libretaUniversitaria que lleva a un objeto de Alumno
-    private Trie<Materia> materiasArbolTrie; // cada rama es el nombre de una materia que lleva a un objeto de Materia
-    private Trie<Carrera> carrerasArbolTrie;  // cada rama es el nombre de una carrera que lleva a un Trie de Materias de esa carrera. Aca vamos a meter todos los elementos de InfoMaterias 
+    private Trie<Alumno> libretasArbolTrie; // cada rama es una libretaUniversitaria que lleva a un objeto de tipo Alumno
+    private Trie<Carrera> carrerasArbolTrie;  // cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera. Aca vamos a meter todos los elementos de InfoMaterias 
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
 
@@ -17,13 +16,9 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
         PROF
     }
 
-    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
-        this.ListaMaterias = infoMaterias;
-        this.ListalibretasUniversitarias = libretasUniversitarias; // creo que hay que agregar a todas las libretas universitarias al Trie, pero son las 4 de la mañana y ya no sé
-        agregoMateriasYLUs();
-    }
+    
 
-    public void agregoMateriasYLUs(){
+    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         for (InfoMateria materia : this.ListaMaterias){
             for (ParCarreraMateria par : materia.getParesCarreraMateria()){
                 String nombreCarrera = par.getCarrera();
@@ -37,6 +32,8 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
             this.libretasArbolTrie.agregar(libreta, soloLibreta);
         }
     }
+
+
 
     public void inscribir(String estudiante, String carrera, String materia){
         Alumno existeAlumno = this.libretasArbolTrie.buscar(estudiante);
