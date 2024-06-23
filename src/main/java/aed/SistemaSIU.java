@@ -21,6 +21,13 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         this.ListaMaterias = infoMaterias;
         this.ListalibretasUniversitarias = libretasUniversitarias; // creo que hay que agregar a todas las libretas universitarias al Trie, pero son las 4 de la mañana y ya no sé
+        agregoMateriasYLUs();
+    }
+
+    public void agregoMateriasYLUs(){
+        for (InfoMateria materia : this.ListaMaterias){ // hay que meter todos los LU y todas las materias con las que se inicializa el SIU en los arboles Tries respectivos.
+            this.materiasArbolTrie.agregar(materia, ); // cuando los metemos no importa mucho los datos, como los docentes y eso, despues los vamos agregando, pero tienen que estar.
+        }
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
@@ -56,14 +63,14 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public String[] carreras(){
-      
+        throw new UnsupportedOperationException("Método no implementado aún");
     }
 
     public String[] materias(String carrera){
-        	    
+        throw new UnsupportedOperationException("Método no implementado aún");	    
     }
 
     public int materiasInscriptas(String estudiante){
-        ;	    
+        throw new UnsupportedOperationException("Método no implementado aún");    
     }
 }
