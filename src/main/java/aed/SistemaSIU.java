@@ -28,11 +28,13 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
         Alumno existeAlumno = this.libretasArbolTrie.buscar(estudiante);
         if (existeAlumno != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
             existeAlumno.sumarMateria();
+            
         }
         else {
             Alumno nuevoAlumno = new Alumno(estudiante, carrera, 1);
             this.libretasArbolTrie.agregar(estudiante, nuevoAlumno);
         }
+        this.materiasArbolTrie.
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){

@@ -1,38 +1,58 @@
 package aed;
 
-public class NodoTrie {
+import java.util.ArrayList;
 
-    private String info;
-    private ListaS<NodoTrie> hijos;
-    private boolean finPalabra;
+public class NodoNigga<T>{
+    
+    private String letra;
+    private boolean esFinPalabra;
+    private T info;
+    private ArrayList<NodoNigga<T>> hijos; //lista de hijos del nodo
+    
 
-    public NodoTrie(String info) {
-        this.info = info;
-        this.hijos = new ListaS();
+    public NodoNigga(){
+        letra = null;
+        info = null;
+        esFinPalabra = false;
+        hijos = new ArrayList<>(256);
     }
 
-    public String getInfo() {
+    public NodoNigga(String caracter, T informacion){ // java go brr
+        letra = caracter;
+        info = informacion;
+        hijos = new ArrayList<>(256);
+    }
+
+    public String getLetra(){
+        return letra;
+    }
+
+    public void setInfo(T info){
+        this.info = info;
+    }
+    public boolean esFinPalabra() {
+        return esFinPalabra;
+    }
+    public void setFinDePalabra(boolean esFinPalabra) {
+        this.esFinPalabra = esFinPalabra;
+    }
+    public T getInfo(){
         return info;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public ListaS<NodoTrie> getHijos() {
+    public ArrayList<NodoNigga<T>> getHijos(){
         return hijos;
     }
-
-    public void setHijos(ListaS<NodoTrie> hijos) {
-        this.hijos = hijos;
+    public NodoNigga<T> getHijoPorCarater(char ch) {
+        for (NodoNigga<T> hijo : hijos) {
+            if (hijo.getLetra().equals(String.valueOf(ch))) {// comparo los valores del input con la letra de mi hijo actual.
+                return hijo;
+        }
     }
-
-    public boolean isFinPalabra() {
-        return finPalabra;
+    return null;
     }
-
-    public void setFinPalabra(boolean finPalabra) {
-        this.finPalabra = finPalabra;
+    public void agregarHijo(NodoNigga<T>  hijo) {
+        hijos.add(hijo); // lo agrego a la lista de hijos.
     }
-
 }
+
