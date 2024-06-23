@@ -1,19 +1,19 @@
 package aed;
 
-public class TrieNigga<T>{
+public class Trie<T>{
 
-    private NodoNigga<T> raiz;
+    private NodoTrie<T> raiz;
 
-    public TrieNigga(){
-        raiz = new NodoNigga<>();
+    public Trie(){
+        raiz = new NodoTrie<>();
     }
 
     public void agregar(String nombre, T coso){
-        NodoNigga<T> actual = raiz;
+        NodoTrie<T> actual = raiz;
         for (char ch : nombre.toCharArray()) {
-            NodoNigga<T> hijo = actual.getHijoPorCarater(ch);
+            NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
             if (hijo == null){
-                hijo = new NodoNigga<>(String.valueOf(ch),null); // uso String.valueof porque lo estoy pasando desde toCharArray
+                hijo = new NodoTrie<>(String.valueOf(ch),null); // uso String.valueof porque lo estoy pasando desde toCharArray
                 actual.agregarHijo(hijo);
             }
             actual = hijo;
@@ -22,9 +22,9 @@ public class TrieNigga<T>{
         actual.setInfo(coso);
     }
     public T buscar(String nombre) {
-        NodoNigga<T> actual = raiz;
+        NodoTrie<T> actual = raiz;
         for (char ch : nombre.toCharArray()) {
-            NodoNigga<T> hijo = actual.getHijoPorCarater(ch);
+            NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
             if (hijo == null) {
                 return null;
             }

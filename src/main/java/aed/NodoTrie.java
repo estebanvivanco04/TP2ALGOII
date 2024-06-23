@@ -2,22 +2,22 @@ package aed;
 
 import java.util.ArrayList;
 
-public class NodoNigga<T>{
+public class NodoTrie<T>{
     
     private String letra;
     private boolean esFinPalabra;
     private T info;
-    private ArrayList<NodoNigga<T>> hijos; //lista de hijos del nodo
+    private ArrayList<NodoTrie<T>> hijos; //lista de hijos del nodo
     
 
-    public NodoNigga(){
+    public NodoTrie(){
         letra = null;
         info = null;
         esFinPalabra = false;
         hijos = new ArrayList<>(256);
     }
 
-    public NodoNigga(String caracter, T informacion){ // java go brr
+    public NodoTrie(String caracter, T informacion){ // java go brr
         letra = caracter;
         info = informacion;
         hijos = new ArrayList<>(256);
@@ -40,18 +40,18 @@ public class NodoNigga<T>{
         return info;
     }
 
-    public ArrayList<NodoNigga<T>> getHijos(){
+    public ArrayList<NodoTrie<T>> getHijos(){
         return hijos;
     }
-    public NodoNigga<T> getHijoPorCarater(char ch) {
-        for (NodoNigga<T> hijo : hijos) {
+    public NodoTrie<T> getHijoPorCarater(char ch) {
+        for (NodoTrie<T> hijo : hijos) {
             if (hijo.getLetra().equals(String.valueOf(ch))) {// comparo los valores del input con la letra de mi hijo actual.
                 return hijo;
         }
     }
     return null;
     }
-    public void agregarHijo(NodoNigga<T>  hijo) {
+    public void agregarHijo(NodoTrie<T>  hijo) {
         hijos.add(hijo); // lo agrego a la lista de hijos.
     }
 }

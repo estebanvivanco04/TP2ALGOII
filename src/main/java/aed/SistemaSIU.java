@@ -6,11 +6,10 @@ import java.util.Set;
 
 public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando. 
 
-    private TrieNigga<Alumno> libretasArbolTrie;
-    private TrieNigga<Materia> materiasArbolTrie;
+    private Trie<Alumno> libretasArbolTrie;
+    private Trie<Materia> materiasArbolTrie;
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
-    private CargoDocente docente;
 
     enum CargoDocente{
         AY2,
@@ -21,7 +20,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         this.ListaMaterias = infoMaterias;
-        this.ListalibretasUniversitarias = libretasUniversitarias;
+        this.ListalibretasUniversitarias = libretasUniversitarias; // creo que hay que agregar a todas las libretas universitarias al Trie, pero son las 4 de la mañana y ya no sé
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
@@ -34,7 +33,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
             Alumno nuevoAlumno = new Alumno(estudiante, carrera, 1);
             this.libretasArbolTrie.agregar(estudiante, nuevoAlumno);
         }
-        this.materiasArbolTrie.
+        this.materiasArbolTrie.buscar(materia).sumarInscriptos();
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
@@ -42,7 +41,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        return (this.ma(materia).getDocentes());
     }
 
     public void cerrarMateria(String materia, String carrera){
