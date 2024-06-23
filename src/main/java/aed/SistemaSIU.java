@@ -27,7 +27,6 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
         Alumno existeAlumno = this.libretasArbolTrie.buscar(estudiante);
         if (existeAlumno != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
             existeAlumno.sumarMateria();
-            
         }
         else {
             Alumno nuevoAlumno = new Alumno(estudiante, carrera, 1);
@@ -37,34 +36,27 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        this.materiasArbolTrie.buscar(materia).sumarDocente(cargo.ordinal());   // ordinal supuestamente devuelve el indice de su posicion enumerada 
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        return (this.ma(materia).getDocentes());
+        return this.materiasArbolTrie.buscar(materia).getDocentes(); // JAJAJAJAJAJJAJAJAJAJAJAJJAJAJAJAJAJA AJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJ ME HABIA OLVIDADO DE PONER .BUSCAR
     }
 
     public void cerrarMateria(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        this.materiasArbolTrie.buscar(materia).cerrarMateria();	    
     }
 
     public int inscriptos(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        return this.materiasArbolTrie.buscar(materia).getcantInscriptos();	    
     }
 
     public boolean excedeCupo(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        return this.materiasArbolTrie.buscar(materia).getcantInscriptos() > this.materiasArbolTrie.buscar(materia).getCupo();  
     }
 
     public String[] carreras(){
-        Set<String> todasLasCarreras = new HashSet<>();
-        for(ParCarreraMateria par : this.infoMaterias){
-            String carreraActual = par.getCarrera();
-            if (!todasLasCarreras.contains(carreraActual)){
-                todasLasCarreras.add(carreraActual);
-            }
-        }
-        return todasLasCarreras.toArray(new String[0]);	    
+      
     }
 
     public String[] materias(String carrera){

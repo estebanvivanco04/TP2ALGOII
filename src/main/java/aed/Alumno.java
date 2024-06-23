@@ -8,7 +8,6 @@ public class Alumno {
     public Alumno(){
         this.carrera = null;
         this.cantidadMat = 0;
-
     }
 
     public Alumno(String numeroLibreta, String carrera, int cantidadMaterias) {
@@ -17,8 +16,6 @@ public class Alumno {
         this.cantidadMat = cantidadMaterias;
     }
 
-    
-    
     public String getlu() {
         return this.lu;
     }
@@ -34,5 +31,5 @@ public class Alumno {
     public void sumarMateria() {
         this.cantidadMat += 1;
     }
-
+    
 }

@@ -15,6 +15,12 @@ public class Materia {
         this.cantInscriptos = cantInscriptos;
         this.infoMateria = infoMaterias;
     }
+    public void cerrarMateria() {
+        this.cupo = 0;
+        this.docentes = null;
+        this.cantInscriptos = 0;
+        this.infoMateria = null; // ¿así se cerraría la materia?
+    }
     
     public int getCupo() {
         return this.cupo;
@@ -40,7 +46,7 @@ public class Materia {
     }
 
     public InfoMateria[] getInfoMateria() {
-        return this.infoMateria;
+        return  this.infoMateria;
     }
 
 }
