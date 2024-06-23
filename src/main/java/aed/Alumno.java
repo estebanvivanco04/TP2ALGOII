@@ -1,17 +1,25 @@
 package aed;
 
 public class Alumno {
-    private int lu;
+    private String lu;
     private String carrera;
     private int cantidadMat;
 
-    public Alumno(int numeroLibreta, String carrera, int cantidadMaterias) {
+    public Alumno(){
+        this.carrera = null;
+        this.cantidadMat = 0;
+
+    }
+
+    public Alumno(String numeroLibreta, String carrera, int cantidadMaterias) {
         this.lu = numeroLibreta;
         this.carrera = carrera;
         this.cantidadMat = cantidadMaterias;
     }
+
     
-    public int getlu() {
+    
+    public String getlu() {
         return this.lu;
     }
 

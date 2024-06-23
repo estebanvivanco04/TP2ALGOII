@@ -6,8 +6,8 @@ import java.util.Set;
 
 public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando. 
 
-    private TrieNigga libretasArbolTrie = new TrieNigga<>();
-    private TrieNigga materiasArbolTrie;
+    private TrieNigga<Alumno> libretasArbolTrie;
+    private TrieNigga<Materia> materiasArbolTrie;
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
     private CargoDocente docente;
