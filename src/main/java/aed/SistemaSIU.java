@@ -1,13 +1,12 @@
 package aed;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando. 
 
-    private Trie<Alumno> libretasArbolTrie;
-    private Trie<Materia> materiasArbolTrie;
+    private Trie<Alumno> libretasArbolTrie; // cada rama es una libretaUniversitaria que lleva a un objeto de Alumno
+    private Trie<Materia> materiasArbolTrie; // cada rama es el nombre de una materia que lleva a un objeto de Materia
+    private Trie<Carrera> carrerasArbolTrie;  // cada rama es el nombre de una carrera que lleva a un Trie de Materias de esa carrera. Aca vamos a meter todos los elementos de InfoMaterias 
     private InfoMateria[] ListaMaterias;
     private String[] ListalibretasUniversitarias;
 
@@ -26,19 +25,27 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
 
     public void agregoMateriasYLUs(){
         for (InfoMateria materia : this.ListaMaterias){
-            Materia nuevaMateria = new Materia(0, new int[]{0}, 0, this.ListaMaterias); // hay que meter todos los LU y todas las materias con las que se inicializa el SIU en los arboles Tries respectivos.
-            this.materiasArbolTrie.agregar(materia.toString(), nuevaMateria); // cuando los metemos no importa mucho los datos, como los docentes y eso, despues los vamos agregando, pero tienen que estar.
+            for (ParCarreraMateria par : materia.getParesCarreraMateria()){
+                String nombreCarrera = par.getCarrera();
+                String nombreMateria = par.getNombreMateria();
+                this.carrerasArbolTrie.agregar(nombreCarrera);
+                this.carrerasArbolTrie.buscar(nombreCarrera).agregarMateria(nombreMateria);
+            }
+        }
+        for (String libreta : this.ListalibretasUniversitarias){
+            Alumno soloLibreta = new Alumno(libreta, null, 0);
+            this.libretasArbolTrie.agregar(libreta, soloLibreta);
         }
     }
 
     public void inscribir(String estudiante, String carrera, String materia){
         Alumno existeAlumno = this.libretasArbolTrie.buscar(estudiante);
-        if (existeAlumno != null && existeAlumno.getCarrera() != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
+        if (existeAlumno.getCarrera() != null) { // osea, si ya existe el alumno en el SIU solo quiero sumarle uno en su Objeto, a la cantidad de carreras que cursa
             existeAlumno.sumarMateria();
         }
         else {
-            Alumno nuevoAlumno = new Alumno(estudiante, carrera, 1);
-            this.libretasArbolTrie.agregar(estudiante, nuevoAlumno);
+            existeAlumno.definirCarrera(carrera);
+            existeAlumno.sumarMateria();
         }
         this.materiasArbolTrie.buscar(materia).sumarInscriptos();
     }

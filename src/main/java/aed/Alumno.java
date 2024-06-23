@@ -16,6 +16,10 @@ public class Alumno {
         this.cantidadMat = cantidadMaterias;
     }
 
+    public void definirCarrera(String carre) {
+        this.carrera = carre;
+    }
+
     public String getlu() {
         return this.lu;
     }
