@@ -14,13 +14,19 @@ public class NodoTrie<T>{
         letra = null;
         info = null;
         esFinPalabra = false;
-        hijos = new ArrayList<>(256);
+        hijos = new ArrayList<NodoTrie<T>>(256);
+        for (int i = 0; i<256; i++){
+            hijos.add(i,null);
+        }
     }
 
     public NodoTrie(String caracter, T informacion){
         letra = caracter;
         info = informacion;
-        hijos = new ArrayList<>(256);
+        hijos = new ArrayList<NodoTrie<T>>(256);
+        for (int i = 0; i<256; i++){
+            hijos.add(i,null);
+        }
     }
 
     public String getLetra(){
@@ -45,8 +51,11 @@ public class NodoTrie<T>{
     }
     public NodoTrie<T> getHijoPorCarater(char ch) {
         for (NodoTrie<T> hijo : hijos) {
-            if (hijo.getLetra().equals(String.valueOf(ch))) {// comparo los valores del input con la letra de mi hijo actual.
-                return hijo;
+            if (hijo != null){
+                if (hijo.getLetra().equals(String.valueOf(ch))) {// comparo los valores del input con la letra de mi hijo actual.
+                    return hijo;
+            }
+            
         }
     }
     return null;
@@ -55,7 +64,9 @@ public class NodoTrie<T>{
         char caracter = hijo.letra.toCharArray()[0];
         int ascii = (int) caracter;
 
-        hijos.set(ascii,hijo);
+        hijos.add(ascii,hijo);
     }
 }
+
+// [,,,,,,,,,,,,,,,,,,,,,,,,,,,,] capacity = n, size = 0
 

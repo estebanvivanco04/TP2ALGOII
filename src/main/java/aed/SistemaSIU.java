@@ -56,11 +56,11 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
         carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).sumarInscripto();
     }
 
-    public void agregarDocente(CargoDocente cargo, String carrera, String materia){// .ordinal() supuestamente devuelve el indice de su posicion enumerada 
+    public void agregarDocente(CargoDocente cargo, String carrera, String materia){
         carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes()[cargo.ordinal()] += 1;
     }
 
-    public int[] plantelDocente(String materia, String carrera){ // JAJAJAJAJAJJAJAJAJAJAJAJJAJAJAJAJAJA AJAJAJJAJAJAJAJAJAJAJAJAJAJAJAJAJAJJAJAJAJAJ ME HABIA OLVIDADO DE PONER .BUSCAR
+    public int[] plantelDocente(String materia, String carrera){
         return carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
     }
 
@@ -88,6 +88,6 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public int materiasInscriptas(String estudiante){
-        throw new UnsupportedOperationException("Método no implementado aún");    
+        return libretasArbolTrie.buscar(estudiante).getCantMat();    
     }
 }
