@@ -15,9 +15,15 @@ public class Carrera {
 
     }
 
-
     public void agregarMateria(String nombreMateria, Materia materia) {
         this.materiasDeLaCarrera.agregar(nombreMateria, materia);
     }
     
+    public String getNombreCarrera(){
+        return carrera;
+    }
+
+    public Trie<Materia> getMaterias(){
+        return materiasDeLaCarrera;
+    }
 }

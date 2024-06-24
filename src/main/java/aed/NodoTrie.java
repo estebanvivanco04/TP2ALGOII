@@ -17,7 +17,7 @@ public class NodoTrie<T>{
         hijos = new ArrayList<>(256);
     }
 
-    public NodoTrie(String caracter, T informacion){ // java go brr
+    public NodoTrie(String caracter, T informacion){
         letra = caracter;
         info = informacion;
         hijos = new ArrayList<>(256);
@@ -51,8 +51,11 @@ public class NodoTrie<T>{
     }
     return null;
     }
-    public void agregarHijo(NodoTrie<T>  hijo) {
-        hijos.add(hijo); // lo agrego a la lista de hijos.
+    public void agregarHijo(NodoTrie<T>  hijo) {// convierto la letra del hijo a su valor ASCII y meto el nodo en la posición correspondiente en la lista de hijos
+        char caracter = hijo.letra.toCharArray()[0];
+        int ascii = (int) caracter;
+
+        hijos.set(ascii,hijo);
     }
 }
 

@@ -19,7 +19,7 @@ public class Materia {
         this.cupo = 0;
         this.docentes = null;
         this.cantInscriptos = 0;
-        this.infoMateria = null; // ¿así se cerraría la materia?
+        this.infoMateria = null; // ¿así se cerraría la materia? i think not
     }
     
     public int getCupo() {
@@ -30,23 +30,27 @@ public class Materia {
         return docentes;
     }
 
-    public int cantidadTotalDeDocentes() {
-        return (docentes[0]*250 + docentes[1]*100 + docentes[2]*20 + docentes[3]*30);
-    }
-
     public int getcantInscriptos() {
         return this.cantInscriptos; 
     }
 
-    public void sumarInscriptos() {
+    public void sumarInscripto() {
         cantInscriptos += 1;
-    }
-    public void sumarDocente(int cargo) { // le vamos a pasar directamente lo que "vale el docente" osea si es 0 es AY2 si es 1 es AY1, si es 2 es JTP 
-        docentes[cargo] += 1; // le sumo un docente, del tipo cargo, hay 4 tipos de cargo, 0 1 2 y 3. estan en docentes enum en SISTEMASIU
     }
 
     public InfoMateria getInfoMateria() {
         return  this.infoMateria;
+    }
+
+    public int calcularCupo(){
+        int[] posiblesCupos = {docentes[0]*250, docentes[1]*100, docentes[2]*20, docentes[3]*30};
+        int min = posiblesCupos[0];
+        for (int i = 0; i < posiblesCupos.length - 1; i++){
+            if (posiblesCupos[i]<=min){
+                min = posiblesCupos[i];
+            }
+        }
+        return min;
     }
 
 }

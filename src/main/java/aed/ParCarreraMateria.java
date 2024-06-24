@@ -13,7 +13,7 @@ public class ParCarreraMateria {
         return this.nombreMateria;
     }
 
-    public String getCarrera() {
+    public String getNombreCarrera() {
         return this.carrera;
     }
 }
