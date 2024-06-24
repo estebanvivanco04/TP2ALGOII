@@ -52,8 +52,7 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
 
 
     public void inscribir(String estudiante, String carrera, String materia){
-        libretasArbolTrie.buscar(estudiante).sumarMateria();
-        carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).sumarInscripto();
+        libretasArbolTrie.buscar(estudiante).inscribirAMateria(carrera, materia, carrerasArbolTrie);
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
@@ -64,7 +63,17 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
         return carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
     }
 
-    public void cerrarMateria(String materia, String carrera){   
+    public void cerrarMateria(String materia, String carrera){
+        InfoMateria infoMateria = carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria();
+
+        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){
+            carrerasArbolTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
+        }
+
+        for (int i = 0; i < carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos(); i++){
+
+        }
+
     }
 
     public int inscriptos(String materia, String carrera){
@@ -91,3 +100,14 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
         return libretasArbolTrie.buscar(estudiante).getCantMat();    
     }
 }
+
+
+// INVARIANTES
+
+// Alumno: longitud de "lu" > 0 && cantidadDeMaterias >= 0  Trie: existe raiz && raiz es NodoTrie && Si letra es fin de palabra -> es True.  NodoTrie: todo Hijo tiene padre
+
+//String carrera tiene longitud > 0
+//Trie<Materia> materiasDeLaCarrera tiene al menos una rama (materia)
+//cupo es >= 0
+//int[] docentes es al menos >= 0 en sus 4 posiciones respectivamente
+//cantInscriptos es >= 0

@@ -1,5 +1,8 @@
 package aed;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import aed.InfoMateria;
 
 public class Materia { 
@@ -7,13 +10,15 @@ public class Materia {
     private int cupo;
     private int[] docentes;
     private int cantInscriptos;
-    private InfoMateria infoMateria; 
+    private InfoMateria infoMateria;
+    private ArrayList<Alumno> alumnosInscriptos;
     
     public Materia(int cupo, int[] docentes, int cantInscriptos, InfoMateria infoMaterias) {
         this.cupo = cupo;
         this.docentes = docentes;
         this.cantInscriptos = cantInscriptos;
         this.infoMateria = infoMaterias;
+        this.alumnosInscriptos = new ArrayList<Alumno>();
     }
     public void cerrarMateria() {
         this.cupo = 0;
@@ -51,6 +56,10 @@ public class Materia {
             }
         }
         return min;
+    }
+
+    public ArrayList<Alumno> getAlumnosInscriptos(){
+        return alumnosInscriptos;
     }
 
 }

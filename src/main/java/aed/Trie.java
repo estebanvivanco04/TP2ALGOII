@@ -8,7 +8,7 @@ public class Trie<T>{
         raiz = new NodoTrie<>();
     }
 
-    public void agregar(String nombre, T coso){
+    public void agregar(String nombre, T objeto){
         NodoTrie<T> actual = raiz;
         for (char ch : nombre.toCharArray()) {
             NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
@@ -19,7 +19,7 @@ public class Trie<T>{
             actual = hijo;
         }
         actual.setFinDePalabra(true);
-        actual.setInfo(coso);
+        actual.setInfo(objeto);
     }
     public T buscar(String nombre) {
         NodoTrie<T> actual = raiz;
@@ -37,4 +37,18 @@ public class Trie<T>{
         }
 
     }
+
+    public void eliminar(String nombre){
+        NodoTrie<T> actual = raiz;
+        for (char ch : nombre.toCharArray()) {
+            NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
+            if (hijo == null) {
+                return;
+            }
+            actual = hijo;
+        }
+        actual.setInfo(null);
+    }
 }
+
+

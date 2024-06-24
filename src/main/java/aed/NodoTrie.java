@@ -8,6 +8,7 @@ public class NodoTrie<T>{
     private boolean esFinPalabra;
     private T info;
     private ArrayList<NodoTrie<T>> hijos; //lista de hijos del nodo
+    private NodoTrie<T> padre;
     
 
     public NodoTrie(){
@@ -18,6 +19,7 @@ public class NodoTrie<T>{
         for (int i = 0; i<256; i++){
             hijos.add(i,null);
         }
+        padre = null;
     }
 
     public NodoTrie(String caracter, T informacion){
@@ -27,6 +29,7 @@ public class NodoTrie<T>{
         for (int i = 0; i<256; i++){
             hijos.add(i,null);
         }
+        padre = null;
     }
 
     public String getLetra(){
@@ -65,8 +68,10 @@ public class NodoTrie<T>{
         int ascii = (int) caracter;
 
         hijos.add(ascii,hijo);
+        hijo.padre = this;
+    }
+
+    public NodoTrie<T> getpadre(){
+        return padre;
     }
 }
-
-// [,,,,,,,,,,,,,,,,,,,,,,,,,,,,] capacity = n, size = 0
-
