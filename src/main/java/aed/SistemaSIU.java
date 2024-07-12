@@ -1,13 +1,10 @@
 package aed;
 
 import java.util.ArrayList;
+public class SistemaSIU {
 
-import javax.sound.midi.MidiDevice.Info;
-
-public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estudiante, su carrera  las materias que esta cursando. 
-
-    private Trie<Alumno> libretasArbolTrie; // cada rama es una libretaUniversitaria que lleva a un objeto de tipo Alumno
-    private Trie<Carrera> carrerasArbolTrie;  // cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera. Aca vamos a meter todos los elementos de InfoMaterias 
+    private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno
+    private Trie<Carrera> carrerasTrie;  // cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera.
 
     enum CargoDocente{
         PROF,
@@ -19,8 +16,8 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     
 
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
-        carrerasArbolTrie = new Trie<Carrera>();
-        libretasArbolTrie = new Trie<Alumno>();
+        carrerasTrie = new Trie<Carrera>();
+        libretasTrie = new Trie<Alumno>();
         for (InfoMateria InfoMateria : infoMaterias){
             int[] plantelDocenteInicial = new int[4];
             InfoMateria infoMateria = InfoMateria;
@@ -30,58 +27,60 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
                 String nombreCarrera = par.getNombreCarrera();
                 String nombreMateria = par.getNombreMateria();
 
-                if (carrerasArbolTrie.buscar(nombreCarrera) == null){
-                    Carrera nuevaCarrera = new Carrera(nombreCarrera);      // si la carrera todavía no existe, la creo
-                    carrerasArbolTrie.agregar(nombreCarrera, nuevaCarrera);
+                // si la carrera todavía no existe, la creo
+                if (carrerasTrie.buscar(nombreCarrera) == null){
+                    Carrera nuevaCarrera = new Carrera(nombreCarrera);
+                    carrerasTrie.agregar(nombreCarrera, nuevaCarrera);
                 }
                 
                 // Agrego la materia a la carrera. 
-                carrerasArbolTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);
+                carrerasTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);
                 
-                // Como con todos los pares agrego el mismo objeto "materia", 
+                // Como a todos los pares les agrego el mismo objeto "materia", 
                 // lo que le ocurra a "Algoritmos1" en "Ciencias de Datos" también le va a ocurrir a "Intro a la Programación" en "Ciencias de la Computación", por dar un ejemplo
             }
         }
 
         for (String libreta : libretasUniversitarias){
             Alumno alumno = new Alumno(libreta, 0);
-            this.libretasArbolTrie.agregar(libreta, alumno);
+            this.libretasTrie.agregar(libreta, alumno);
         }
     }
 
 
 
     public void inscribir(String estudiante, String carrera, String materia){
-        libretasArbolTrie.buscar(estudiante).inscribirAMateria(carrera, materia, carrerasArbolTrie);
+        libretasTrie.buscar(estudiante).inscribirAMateria(carrera, materia, carrerasTrie);
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes()[cargo.ordinal()] += 1;
+        carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes()[cargo.ordinal()] += 1;
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        return carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
     }
 
     public void cerrarMateria(String materia, String carrera){
-        InfoMateria infoMateria = carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria();
-
-        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){
-            carrerasArbolTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
+        
+        for (int i = 0; i < carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos(); i++){
+            
         }
 
-        for (int i = 0; i < carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos(); i++){
-
+        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria();
+        
+        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){
+            carrerasTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
         }
 
     }
 
     public int inscriptos(String materia, String carrera){
-        return carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos();    
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos();    
     }
 
     public boolean excedeCupo(String materia, String carrera){ 
-        return carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos() > carrerasArbolTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
     }
 
     public String[] carreras(){
@@ -97,10 +96,9 @@ public class SistemaSIU {// cuando le pasas el lu te devuelve el nombre del estu
     }
 
     public int materiasInscriptas(String estudiante){
-        return libretasArbolTrie.buscar(estudiante).getCantMat();    
+        return libretasTrie.buscar(estudiante).getCantMat();    
     }
 }
-
 
 // INVARIANTES
 

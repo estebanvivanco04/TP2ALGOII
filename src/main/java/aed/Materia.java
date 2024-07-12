@@ -43,6 +43,10 @@ public class Materia {
         cantInscriptos += 1;
     }
 
+    public void restarInscripto() {
+        cantInscriptos -= 1;
+    }
+
     public InfoMateria getInfoMateria() {
         return  this.infoMateria;
     }

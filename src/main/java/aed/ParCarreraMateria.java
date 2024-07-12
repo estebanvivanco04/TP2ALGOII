@@ -2,15 +2,15 @@ package aed;
 
 public class ParCarreraMateria {
     String carrera;
-    String nombreMateria;
+    String materia;
 
-    public ParCarreraMateria(String carrera, String nombreMateria) {
+    public ParCarreraMateria(String carrera, String materia) {
         this.carrera = carrera;
-        this.nombreMateria = nombreMateria;
+        this.materia = materia;
     }
 
     public String getNombreMateria() {
-        return this.nombreMateria;
+        return this.materia;
     }
 
     public String getNombreCarrera() {

@@ -28,8 +28,11 @@ public class Alumno {
         carreras.buscar(carrera).getMaterias().buscar(materia).sumarInscripto();
     }
 
-    public void desinscribirDeMateria(){
-        cantidadMat -=1;
+    public void desinscribirDeMateria(String carrera, String materia, Trie<Carrera> carreras){
+        this.cantidadMat -=1;
+        carreras.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos().remove(carreras.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos().indexOf(this));
+        carreras.buscar(carrera).getMaterias().buscar(materia).restarInscripto();
+
     }
     
 }
