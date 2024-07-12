@@ -18,10 +18,9 @@ public class SistemaSIU {
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         carrerasTrie = new Trie<Carrera>();
         libretasTrie = new Trie<Alumno>();
-        for (InfoMateria InfoMateria : infoMaterias){
+        for (InfoMateria InfoMateria : infoMaterias){ // O(materiaNueva)
             int[] plantelDocenteInicial = new int[4];
-            InfoMateria infoMateria = InfoMateria;
-            Materia materia = new Materia(0, plantelDocenteInicial, 0, infoMateria); // creo la materia con la infoMateria correspondiente
+            Materia materia = new Materia(0, plantelDocenteInicial, 0, InfoMateria); // creo la materia con la infoMateria correspondiente
 
             for (ParCarreraMateria par : InfoMateria.getParesCarreraMateria()){
                 String nombreCarrera = par.getNombreCarrera();
@@ -40,6 +39,7 @@ public class SistemaSIU {
                 // lo que le ocurra a "Algoritmos1" en "Ciencias de Datos" también le va a ocurrir a "Intro a la Programación" en "Ciencias de la Computación", por dar un ejemplo
             }
         }
+        
 
         for (String libreta : libretasUniversitarias){
             Alumno alumno = new Alumno(libreta, 0);
@@ -63,13 +63,13 @@ public class SistemaSIU {
 
     public void cerrarMateria(String materia, String carrera){
         
-        for (int i = 0; i < carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos(); i++){
+        for (int i = 0; i < carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos(); i++){ // O(|c|) + O(1) + O(|m|) = O(|n| + |m|) este for se va a hacer la cantidadDeInscriptos() veces.
             
         }
 
-        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria();
+        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria(); // O(|c|) + O(1) + O(|m|)
         
-        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){
+        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){ // O(cantidadDeParesCarreraMateria)
             carrerasTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
         }
 
