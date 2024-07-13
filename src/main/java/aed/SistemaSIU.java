@@ -3,8 +3,8 @@ package aed;
 import java.util.ArrayList;
 public class SistemaSIU {
 
-    private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno
-    private Trie<Carrera> carrerasTrie;  // cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera.
+    private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno. Buscar en este trie es O(1) porque las claves son acotadas
+    private Trie<Carrera> carrerasTrie;// cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera.
 
     enum CargoDocente{
         PROF,
@@ -18,9 +18,11 @@ public class SistemaSIU {
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         carrerasTrie = new Trie<Carrera>();
         libretasTrie = new Trie<Alumno>();
-        for (InfoMateria InfoMateria : infoMaterias){ // O(materiaNueva)
+        for (InfoMateria InfoMateria : infoMaterias){ // O(cantidad de materias)
             int[] plantelDocenteInicial = new int[4];
-            Materia materia = new Materia(0, plantelDocenteInicial, 0, InfoMateria); // creo la materia con la infoMateria correspondiente
+
+            // creo la materia con la infoMateria correspondiente
+            Materia materia = new Materia(0, plantelDocenteInicial, 0, InfoMateria);
 
             for (ParCarreraMateria par : InfoMateria.getParesCarreraMateria()){
                 String nombreCarrera = par.getNombreCarrera();
@@ -49,25 +51,25 @@ public class SistemaSIU {
 
 
 
-    public void inscribir(String estudiante, String carrera, String materia){
+    public void inscribir(String estudiante, String carrera, String materia){// O(1 + |c| + |m|) = O(|c| + |m|)
         libretasTrie.buscar(estudiante).inscribirAMateria(carrera, materia, carrerasTrie);
     }
 
-    public void agregarDocente(CargoDocente cargo, String carrera, String materia){
+    public void agregarDocente(CargoDocente cargo, String carrera, String materia){ // O(1 + |c| + 1 + |m| + 1) = O(|c| + |m|)
         carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes()[cargo.ordinal()] += 1;
     }
 
-    public int[] plantelDocente(String materia, String carrera){
+    public int[] plantelDocente(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
         return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
     }
 
     public void cerrarMateria(String materia, String carrera){
-        
-        for (int i = 0; i < carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos(); i++){ // O(|c|) + O(1) + O(|m|) = O(|n| + |m|) este for se va a hacer la cantidadDeInscriptos() veces.
-            
+        ArrayList<Alumno> alumnosADesinscribir = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos();
+        for (Alumno alumnoADesinscribir : alumnosADesinscribir){ // O(|c| + 1 + |m|) = O(|n| + |m|) este for se va a hacer cantidadDeInscriptos() veces.
+            alumnoADesinscribir.desinscribirDeMateria();
         }
 
-        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria(); // O(|c|) + O(1) + O(|m|)
+        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria(); // O(|c| + O(1) + O|m|) = O(|c| + |m|)
         
         for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){ // O(cantidadDeParesCarreraMateria)
             carrerasTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
@@ -75,12 +77,12 @@ public class SistemaSIU {
 
     }
 
-    public int inscriptos(String materia, String carrera){
-        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos();    
+    public int inscriptos(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos();    
     }
 
-    public boolean excedeCupo(String materia, String carrera){ 
-        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getcantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
+    public boolean excedeCupo(String materia, String carrera){ // O(2 * (|c| + 1 |m| + 1)) = O(|c| + |m|)
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
     }
 
     public String[] carreras(){
@@ -95,7 +97,7 @@ public class SistemaSIU {
         throw new UnsupportedOperationException("Método no implementado aún");	    
     }
 
-    public int materiasInscriptas(String estudiante){
+    public int materiasInscriptas(String estudiante){ // O(1 + 1) = O(1)
         return libretasTrie.buscar(estudiante).getCantMat();    
     }
 }

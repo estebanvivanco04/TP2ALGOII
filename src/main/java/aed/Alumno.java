@@ -22,17 +22,14 @@ public class Alumno {
         return this.cantidadMat; 
     }
 
-    public void inscribirAMateria(String carrera, String materia, Trie<Carrera> carreras) {
+    public void inscribirAMateria(String carrera, String materia, Trie<Carrera> carreras) {// O(1 + 2* (|c| + |m|)) = O(|c| + |m|)
         this.cantidadMat += 1;
         carreras.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos().add(this);
         carreras.buscar(carrera).getMaterias().buscar(materia).sumarInscripto();
     }
 
-    public void desinscribirDeMateria(String carrera, String materia, Trie<Carrera> carreras){
+    public void desinscribirDeMateria(){
         this.cantidadMat -=1;
-        carreras.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos().remove(carreras.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos().indexOf(this));
-        carreras.buscar(carrera).getMaterias().buscar(materia).restarInscripto();
-
     }
     
 }

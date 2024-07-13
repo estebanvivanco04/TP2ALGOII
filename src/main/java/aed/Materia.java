@@ -20,12 +20,6 @@ public class Materia {
         this.infoMateria = infoMaterias;
         this.alumnosInscriptos = new ArrayList<Alumno>();
     }
-    public void cerrarMateria() {
-        this.cupo = 0;
-        this.docentes = null;
-        this.cantInscriptos = 0;
-        this.infoMateria = null; // ¿así se cerraría la materia? i think not
-    }
     
     public int getCupo() {
         return this.cupo;
@@ -35,7 +29,7 @@ public class Materia {
         return docentes;
     }
 
-    public int getcantInscriptos() {
+    public int getCantInscriptos() {
         return this.cantInscriptos; 
     }
 
@@ -51,10 +45,10 @@ public class Materia {
         return  this.infoMateria;
     }
 
-    public int calcularCupo(){
+    public int calcularCupo(){// O(1)
         int[] posiblesCupos = {docentes[0]*250, docentes[1]*100, docentes[2]*20, docentes[3]*30};
         int min = posiblesCupos[0];
-        for (int i = 0; i < posiblesCupos.length - 1; i++){
+        for (int i = 0; i < posiblesCupos.length; i++){ // O(posiblesCupos.length) = O(4) = O(1)
             if (posiblesCupos[i]<=min){
                 min = posiblesCupos[i];
             }
