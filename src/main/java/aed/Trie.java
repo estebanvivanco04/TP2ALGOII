@@ -8,10 +8,14 @@ public class Trie<T>{
         raiz = new NodoTrie<>();
     }
 
+    public NodoTrie<T> getRaiz(){
+        return raiz;
+    }
+
     public void agregar(String nombre, T objeto){
         NodoTrie<T> actual = raiz;
         for (char ch : nombre.toCharArray()) {
-            NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
+            NodoTrie<T> hijo = actual.getHijoPorCaracter(ch);
             if (hijo == null){
                 hijo = new NodoTrie<>(String.valueOf(ch),null); // uso String.valueof porque lo estoy pasando desde toCharArray
                 actual.agregarHijo(hijo);
@@ -24,7 +28,7 @@ public class Trie<T>{
     public T buscar(String nombre) {
         NodoTrie<T> actual = raiz;
         for (char ch : nombre.toCharArray()) {
-            NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
+            NodoTrie<T> hijo = actual.getHijoPorCaracter(ch);
             if (hijo == null) {
                 return null;
             }
@@ -41,7 +45,7 @@ public class Trie<T>{
     public void eliminar(String nombre){
         NodoTrie<T> actual = raiz;
         for (char ch : nombre.toCharArray()) {
-            NodoTrie<T> hijo = actual.getHijoPorCarater(ch);
+            NodoTrie<T> hijo = actual.getHijoPorCaracter(ch);
             if (hijo == null) {
                 return;
             }

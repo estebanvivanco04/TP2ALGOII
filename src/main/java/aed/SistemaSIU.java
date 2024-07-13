@@ -64,7 +64,9 @@ public class SistemaSIU {
     }
 
     public void cerrarMateria(String materia, String carrera){
+
         ArrayList<Alumno> alumnosADesinscribir = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos();
+
         for (Alumno alumnoADesinscribir : alumnosADesinscribir){ // O(|c| + 1 + |m|) = O(|n| + |m|) este for se va a hacer cantidadDeInscriptos() veces.
             alumnoADesinscribir.desinscribirDeMateria();
         }
@@ -111,3 +113,20 @@ public class SistemaSIU {
 //cupo es >= 0
 //int[] docentes es al menos >= 0 en sus 4 posiciones respectivamente
 //cantInscriptos es >= 0
+
+
+
+// idea para inOrder, son las 3:27 y yo en lo personal no confiaría mucho en lo que codea Leandro a estas horas
+
+// public String[] carreras(){
+//     String[] listaCarreras = new String[0];
+//     NodoTrie<Carrera> actual = carrerasTrie.getRaiz();
+
+//     for (int i = 0; i < 256; i++){
+//         if(actual.getHijos().get(i) != null){
+
+//         }
+//     }
+
+//     return listaCarreras;
+// }

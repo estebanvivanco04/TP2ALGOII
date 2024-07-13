@@ -7,7 +7,7 @@ public class NodoTrie<T>{
     private String letra;
     private boolean esFinPalabra;
     private T info;
-    private ArrayList<NodoTrie<T>> hijos; //lista de hijos del nodo
+    private ArrayList<NodoTrie<T>> hijos;
     private NodoTrie<T> padre;
     
 
@@ -15,7 +15,7 @@ public class NodoTrie<T>{
         letra = null;
         info = null;
         esFinPalabra = false;
-        hijos = new ArrayList<NodoTrie<T>>(256);
+        hijos = new ArrayList<NodoTrie<T>>(256);// un lugar por cada caracter del código ASCII
         for (int i = 0; i<256; i++){
             hijos.add(i,null);
         }
@@ -39,20 +39,24 @@ public class NodoTrie<T>{
     public void setInfo(T info){
         this.info = info;
     }
-    public boolean esFinPalabra() {
-        return esFinPalabra;
-    }
-    public void setFinDePalabra(boolean esFinPalabra) {
-        this.esFinPalabra = esFinPalabra;
-    }
+
     public T getInfo(){
         return info;
     }
 
+    public boolean esFinPalabra() {
+        return esFinPalabra;
+    }
+
+    public void setFinDePalabra(boolean esFinPalabra) {
+        this.esFinPalabra = esFinPalabra;
+    }
+    
     public ArrayList<NodoTrie<T>> getHijos(){
         return hijos;
     }
-    public NodoTrie<T> getHijoPorCarater(char ch) {
+    
+    public NodoTrie<T> getHijoPorCaracter(char ch) {
         for (NodoTrie<T> hijo : hijos) {
             if (hijo != null){
                 if (hijo.getLetra().equals(String.valueOf(ch))) {// comparo los valores del input con la letra de mi hijo actual.
