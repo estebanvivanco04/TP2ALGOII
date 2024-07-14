@@ -88,21 +88,27 @@ public class SistemaSIU {
     }
 
     public String[] carreras(){
-        String[] listaCarreras = new String[0];
+        ArrayList<String> listaCarreras = new ArrayList<String>();
+        NodoTrie<Carrera> actual = carrerasTrie.getRaiz();
 
-        
+        inOrderCarrerasRecursivo(listaCarreras, actual);
 
-        return listaCarreras;
+        return listaCarreras.toArray(new String[0]);
     }
 
     public String[] materias(String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        ArrayList<String> listaMaterias = new ArrayList<String>();
+        NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz();
+
+        inOrderMateriasRecursivo(listaMaterias, actual, carrera);
+
+        return listaMaterias.toArray(new String[0]);	    
     }
 
     public int materiasInscriptas(String estudiante){ // O(1 + 1) = O(1)
         return libretasTrie.buscar(estudiante).getCantMat();    
     }
-}
+
 
 // INVARIANTES
 
@@ -110,8 +116,8 @@ public class SistemaSIU {
 
 //String carrera tiene longitud > 0
 //Trie<Materia> materiasDeLaCarrera tiene al menos una rama (materia)
-//cupo es >= 0
-//int[] docentes es al menos >= 0 en sus 4 posiciones respectivamente
+//cupo >= 0
+//docentes[i] >= 0 para i/ 0 <= i <= 3
 //cantInscriptos es >= 0
 
 
@@ -119,14 +125,29 @@ public class SistemaSIU {
 // idea para inOrder, son las 3:27 y yo en lo personal no confiaría mucho en lo que codea Leandro a estas horas
 
 // public String[] carreras(){
-//     String[] listaCarreras = new String[0];
-//     NodoTrie<Carrera> actual = carrerasTrie.getRaiz();
-
-//     for (int i = 0; i < 256; i++){
-//         if(actual.getHijos().get(i) != null){
-
-//         }
-//     }
-
+//     ArrayList<String> listaCarreras = new ArrayList<String>();
+//
+//
 //     return listaCarreras;
 // }
+
+    private void inOrderCarrerasRecursivo(ArrayList<String> listaCarreras, NodoTrie<Carrera> actual){
+
+        for (int i = 0; i < 256; i++){
+           if(actual.getHijos().get(i) != null){
+              listaCarreras.add(actual.getHijos().get(i).getInfo().getNombreCarrera());
+            }
+            inOrderCarrerasRecursivo(listaCarreras, actual);
+        }
+    }
+
+    private void inOrderMateriasasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String carrera){
+
+        for (int i = 0; i < 256; i++){
+           if(actual.getHijos().get(i) != null){
+              listaMaterias.add(carrerasTrie.buscar(carrera));
+            }
+            inOrderMateriasRecursivo(listaMaterias, actual, carrera);
+        }
+    }
+}
