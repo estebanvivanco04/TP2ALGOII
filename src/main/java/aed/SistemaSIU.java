@@ -87,20 +87,41 @@ public class SistemaSIU {
         return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
     }
 
-    public String[] carreras(){
+    public String[] carreras(){ // O(1 + 1 + x + 1) = O()
         ArrayList<String> listaCarreras = new ArrayList<String>();
         NodoTrie<Carrera> actual = carrerasTrie.getRaiz();
 
         inOrderCarrerasRecursivo(listaCarreras, actual);
-        System.out.println(listaCarreras.toArray(new String[0]));
+
         return listaCarreras.toArray(new String[0]);
     }
 
+    private void inOrderCarrerasRecursivo(ArrayList<String> listaCarreras, NodoTrie<Carrera> actual){
+
+        for (int i = 0; i < 256; i++){
+
+           if(actual.getHijos().get(i) != null){ // si el i-ésimo hijo de actual no es null, chequeo esFinPalabra y llamo a la función con este mismo hijo
+
+                if(actual.getHijos().get(i).esFinPalabra()){ // esFinPalabra() == true <-> el i-ésimo hijo "apunta" a un objeto de tipo Carrera
+                    listaCarreras.add(actual.getHijos().get(i).getInfo().getNombreCarrera()); // agrego el nombre de la carrera a la lista: O(1)
+                }
+
+                inOrderCarrerasRecursivo(listaCarreras, actual.getHijos().get(i)); // si todos los hijos son null, entonces este hijo es una hoja
+                                                                                   // y este llamado de función se va a ejecutar en O(256) = O(1)
+            }
+
+        }
+    }
+    // inOrderCarrerasRecursivo() en su totalidad se va a ejecutar en O(# de hijos de todos los nodos no nulos del Trie)
+    // como cada nodo tiene 256 hijos, es lo mismo que decir en O(256 * #nodos no nulos del Trie) = O(#nodos no nulos del Trie) 
+    // por lo que en el peor caso es O(sumatoria de las longitudes de todos los nombres definidos en el Trie)
+
+
     public String[] materias(String carrera){
         ArrayList<String> listaMaterias = new ArrayList<String>();
-        NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz();
+        NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz(); // O(|c| + 1 + 1) = O(|c|)
 
-        //inOrderMateriasRecursivo(listaMaterias, actual, carrera);
+        inOrderMateriasRecursivo(listaMaterias, actual, carrera);
 
         return listaMaterias.toArray(new String[0]);	    
     }
@@ -109,28 +130,24 @@ public class SistemaSIU {
         return libretasTrie.buscar(estudiante).getCantMat();    
     }
 
-    private void inOrderCarrerasRecursivo(ArrayList<String> listaCarreras, NodoTrie<Carrera> actual){
+
+
+    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String carrera){
 
         for (int i = 0; i < 256; i++){
-           if(actual.getHijos().get(i) != null){
-                if(actual.getHijos().get(i).esFinPalabra()){
-                    listaCarreras.add(actual.getHijos().get(i).getInfo().getNombreCarrera());
-                }
-                inOrderCarrerasRecursivo(listaCarreras, actual.getHijos().get(i));
-            }
 
-        }
+            if(actual.getHijos().get(i) != null){
+ 
+                 if(actual.getHijos().get(i).esFinPalabra()){
+                    
+                 }
+ 
+                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i));
+                                                                                    
+             }
+ 
+         }
     }
-
-    // private void inOrderMateriasasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String carrera){
-
-    //     for (int i = 0; i < 256; i++){
-    //        if(actual.getHijos().get(i) != null){
-    //           listaMaterias.add(carrerasTrie.buscar(carrera));
-    //         }
-    //         inOrderMateriasRecursivo(listaMaterias, actual, carrera);
-    //     }
-    // }
 }
 
 // INVARIANTES
@@ -142,14 +159,3 @@ public class SistemaSIU {
 //cupo >= 0
 //docentes[i] >= 0 para i/ 0 <= i <= 3
 //cantInscriptos es >= 0
-
-
-
-// idea para inOrder, son las 3:27 y yo en lo personal no confiaría mucho en lo que codea Leandro a estas horas
-
-// public String[] carreras(){
-//     ArrayList<String> listaCarreras = new ArrayList<String>();
-//
-//
-//     return listaCarreras;
-// }

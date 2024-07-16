@@ -12,7 +12,7 @@ public class NodoTrie<T>{
     
 
     public NodoTrie(){
-        letra = null;
+        letra = "";
         info = null;
         esFinPalabra = false;
         hijos = new ArrayList<NodoTrie<T>>(256);// un lugar por cada caracter del código ASCII
