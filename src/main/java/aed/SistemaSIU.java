@@ -121,7 +121,7 @@ public class SistemaSIU {
         ArrayList<String> listaMaterias = new ArrayList<String>();
         NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz(); // O(|c| + 1 + 1) = O(|c|)
 
-        inOrderMateriasRecursivo(listaMaterias, actual, carrera);
+        inOrderMateriasRecursivo(listaMaterias, actual, carrera, actual.getLetra());
 
         return listaMaterias.toArray(new String[0]);	    
     }
@@ -132,17 +132,18 @@ public class SistemaSIU {
 
 
 
-    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String carrera){
+    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String carrera, String nombreMateria){
 
         for (int i = 0; i < 256; i++){
 
             if(actual.getHijos().get(i) != null){
- 
+                nombreMateria += actual.getHijos().get(i).getLetra();
+
                  if(actual.getHijos().get(i).esFinPalabra()){
-                    
+                    listaMaterias.add(nombreMateria);
                  }
  
-                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i));
+                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i), carrera, actual.getLetra());
                                                                                     
              }
  
