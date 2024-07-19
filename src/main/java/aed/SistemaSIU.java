@@ -1,6 +1,8 @@
 package aed;
-
 import java.util.ArrayList;
+
+//InvRep: (libretasTrie != null) && (carrerasTrie != null) 
+
 public class SistemaSIU {
 
     private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno. Buscar en este trie es O(1) porque las claves son acotadas
@@ -14,11 +16,10 @@ public class SistemaSIU {
     }
 
     
-
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         carrerasTrie = new Trie<Carrera>();
         libretasTrie = new Trie<Alumno>();
-        for (InfoMateria InfoMateria : infoMaterias){ // O(cantidad de materias)
+        for (InfoMateria InfoMateria : infoMaterias){
             int[] plantelDocenteInicial = new int[4];
 
             // creo la materia con la infoMateria correspondiente
@@ -29,7 +30,7 @@ public class SistemaSIU {
                 String nombreMateria = par.getNombreMateria();
 
                 // si la carrera todavía no existe, la creo
-                if (carrerasTrie.buscar(nombreCarrera) == null){
+                if (carrerasTrie.buscar(nombreCarrera) == null){// 
                     Carrera nuevaCarrera = new Carrera(nombreCarrera);
                     carrerasTrie.agregar(nombreCarrera, nuevaCarrera);
                 }
@@ -65,15 +66,15 @@ public class SistemaSIU {
 
     public void cerrarMateria(String materia, String carrera){
 
-        ArrayList<Alumno> alumnosADesinscribir = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos();
+        ArrayList<Alumno> alumnosADesinscribir = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos(); // O(|c| + 1 + |m| + 1) = O(|n| + |m|)
 
-        for (Alumno alumnoADesinscribir : alumnosADesinscribir){ // O(|c| + 1 + |m|) = O(|n| + |m|) este for se va a hacer cantidadDeInscriptos() veces.
+        for (Alumno alumnoADesinscribir : alumnosADesinscribir){ // este for se va a hacer cantidadDeInscriptos() veces.
             alumnoADesinscribir.desinscribirDeMateria();
         }
 
         InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria(); // O(|c| + O(1) + O|m|) = O(|c| + |m|)
         
-        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){ // O(cantidadDeParesCarreraMateria)
+        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){ // O(# ParesCarreraMateria)
             carrerasTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
         }
 
@@ -121,7 +122,7 @@ public class SistemaSIU {
         ArrayList<String> listaMaterias = new ArrayList<String>();
         NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz(); // O(|c| + 1 + 1) = O(|c|)
 
-        inOrderMateriasRecursivo(listaMaterias, actual, carrera, actual.getLetra());
+        inOrderMateriasRecursivo(listaMaterias, actual, actual.getLetra());
 
         return listaMaterias.toArray(new String[0]);	    
     }
@@ -132,31 +133,22 @@ public class SistemaSIU {
 
 
 
-    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String carrera, String nombreMateria){
+    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String nombreMateria){
 
         for (int i = 0; i < 256; i++){
 
             if(actual.getHijos().get(i) != null){
-                nombreMateria += actual.getHijos().get(i).getLetra();
+                String nombre = new String();
+                nombre = nombreMateria + actual.getHijos().get(i).getLetra();
 
                  if(actual.getHijos().get(i).esFinPalabra()){
-                    listaMaterias.add(nombreMateria);
+                    listaMaterias.add(nombre);
                  }
  
-                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i), carrera, actual.getLetra());
+                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i), nombre);
                                                                                     
              }
- 
          }
     }
+
 }
-
-// INVARIANTES
-
-// Alumno: longitud de "lu" > 0 && cantidadDeMaterias >= 0  Trie: existe raiz && raiz es NodoTrie && Si letra es fin de palabra -> es True.  NodoTrie: todo Hijo tiene padre
-
-//String carrera tiene longitud > 0
-//Trie<Materia> materiasDeLaCarrera tiene al menos una rama (materia)
-//cupo >= 0
-//docentes[i] >= 0 para i/ 0 <= i <= 3
-//cantInscriptos es >= 0

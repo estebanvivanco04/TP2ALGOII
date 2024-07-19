@@ -1,5 +1,7 @@
 package aed;
 
+//InvRep: raiz != null
+
 public class Trie<T>{
 
     private NodoTrie<T> raiz;
@@ -52,6 +54,7 @@ public class Trie<T>{
             actual = hijo;
         }
         actual.setInfo(null);
+        
     }
 }
 

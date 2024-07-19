@@ -1,6 +1,11 @@
 package aed;
-
 import java.util.ArrayList;
+
+//InvRep: (0 <= |letra| <= 1) &&
+//        (esFinPalabra == true <-> info != null) &&
+//        (|letra| == 0 -> (padre == null && info == null)) &&
+//        (esFinPalabra == true -> |letra| == 1) &&
+//        (|hijos| = 256) && (forall n: NodoTrie<T>)(|letra| == 1 -> n pertenece a padre.hijos) 
 
 public class NodoTrie<T>{
     
@@ -61,12 +66,12 @@ public class NodoTrie<T>{
             if (hijo != null){
                 if (hijo.getLetra().equals(String.valueOf(ch))) {// comparo los valores del input con la letra de mi hijo actual.
                     return hijo;
+                }   
             }
-            
         }
-    }
     return null;
     }
+    
     public void agregarHijo(NodoTrie<T>  hijo) {// convierto la letra del hijo a su valor ASCII y meto el nodo en la posición correspondiente en la lista de hijos
         char caracter = hijo.letra.toCharArray()[0];
         int ascii = (int) caracter;

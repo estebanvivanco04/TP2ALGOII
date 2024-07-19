@@ -1,9 +1,7 @@
 package aed;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import aed.InfoMateria;
+//InvRep: (cupo >= 0) && (|docentes| == 4) && (cantInscriptos >= 0) && (|alumnosInscriptos| >=0)
 
 public class Materia { 
 

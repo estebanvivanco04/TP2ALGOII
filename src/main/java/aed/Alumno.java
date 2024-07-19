@@ -1,5 +1,7 @@
 package aed;
 
+// InvRep: |lu| > 0 && cantidadDeMaterias >= 0
+
 public class Alumno {
     private String lu;
     private int cantidadMat;

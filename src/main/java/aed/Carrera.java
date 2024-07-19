@@ -1,4 +1,7 @@
 package aed;
+
+//InvRep: |carrera| > 0 materiasDeLaCarrera != null
+
 public class Carrera {
     private String carrera;
     private Trie<Materia> materiasDeLaCarrera;
