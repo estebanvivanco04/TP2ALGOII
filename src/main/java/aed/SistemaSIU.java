@@ -128,7 +128,7 @@ public class SistemaSIU {
     }
 
     public int materiasInscriptas(String estudiante){ // O(1 + 1) = O(1)
-        return libretasTrie.buscar(estudiante).getCantMat();    
+        return libretasTrie.buscar(estudiante).getCantMat();
     }
 
 

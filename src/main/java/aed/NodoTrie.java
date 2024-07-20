@@ -76,7 +76,7 @@ public class NodoTrie<T>{
         char caracter = hijo.letra.toCharArray()[0];
         int ascii = (int) caracter;
 
-        hijos.add(ascii,hijo);
+        hijos.set(ascii,hijo);
         hijo.padre = this;
     }
 

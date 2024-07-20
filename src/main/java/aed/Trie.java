@@ -53,8 +53,51 @@ public class Trie<T>{
             }
             actual = hijo;
         }
-        actual.setInfo(null);
         
+        boolean todosHijosNulos = true;
+
+        for (int i = 0; i < 256; i++){// O(256) = O(1)
+            if (actual.getHijos().get(i) != null){
+                todosHijosNulos = false;
+            }
+        }
+
+        if(todosHijosNulos == false){ // si actual tiene al menos 1 hijo no nulo, solo le quito la info
+            actual.setInfo(null);
+        }else{
+            // seteo la posicion de actual en la lista de hijos del padre como null
+            char caracter = actual.getLetra().toCharArray()[0];
+            int ascii = (int) caracter;
+            actual.getpadre().getHijos().set(ascii, null);
+
+            // hay que deshacerse de los nodos inútiles
+            borrarHaciaArribaRecursivo(actual.getpadre());
+        }
+        
+    }
+
+    private void borrarHaciaArribaRecursivo (NodoTrie<T> actual){
+        boolean todosHijosNulos = false;
+
+        for (int i = 0; i < 256; i++){// O(256) = O(1)
+            if (actual.getHijos().get(i) == null){
+                todosHijosNulos = true;
+            }
+        }
+
+        if(todosHijosNulos == false){// si actual tiene al menos 1 hijo no nulo, no hago nada
+            return;
+        }else{
+            if(actual.getLetra() != ""){// si actual es la raíz me detengo
+                // seteo la posicion de actual en la lista de hijos del padre como null
+                char caracter = actual.getLetra().toCharArray()[0];
+                int ascii = (int) caracter;
+                actual.getpadre().getHijos().set(ascii, null);
+
+                // continúo hacia arriba
+                borrarHaciaArribaRecursivo(actual.getpadre());
+            }
+        }
     }
 }
 
