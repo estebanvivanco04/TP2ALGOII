@@ -7,6 +7,7 @@ public class SistemaSIU {
 
     private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno. Buscar en este trie es O(1) porque las claves son acotadas
     private Trie<Carrera> carrerasTrie;// cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera.
+    private Trie<ArrayList<Carrera>> materiasTrie;
 
     enum CargoDocente{
         PROF,
@@ -19,6 +20,7 @@ public class SistemaSIU {
     public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
         carrerasTrie = new Trie<Carrera>();
         libretasTrie = new Trie<Alumno>();
+        materiasTrie = new Trie<ArrayList<Carrera>>();
         for (InfoMateria InfoMateria : infoMaterias){
             int[] plantelDocenteInicial = new int[4];
 
@@ -28,19 +30,20 @@ public class SistemaSIU {
             for (ParCarreraMateria par : InfoMateria.getParesCarreraMateria()){
                 String nombreCarrera = par.getNombreCarrera();
                 String nombreMateria = par.getNombreMateria();
-
+                Carrera nuevaCarrera = new Carrera(nombreCarrera);
+                MateriaParaCarrera mateParaCarre = new MateriaParaCarrera(nuevaCarrera, nombreMateria);
                 // si la carrera todavía no existe, la creo
                 if (carrerasTrie.buscar(nombreCarrera) == null){// 
-                    Carrera nuevaCarrera = new Carrera(nombreCarrera);
                     carrerasTrie.agregar(nombreCarrera, nuevaCarrera);
                 }
                 
-                // Agrego la materia a la carrera. 
+                // Agrego la materia a la carrera.
                 carrerasTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);
+                carrerasTrie.buscar(nombreCarrera).getMaterias().buscar(nombreMateria).carrerasInscriptas().add(mateParaCarre);
+            }
                 
                 // Como a todos los pares les agrego el mismo objeto "materia", 
-                // lo que le ocurra a "Algoritmos1" en "Ciencias de Datos" también le va a ocurrir a "Intro a la Programación" en "Ciencias de la Computación", por dar un ejemplo
-            }
+               // lo que le ocurra a "Algoritmos1" en "Ciencias de Datos" también le va a ocurrir a "Intro a la Programación" en "Ciencias de la Computación", por dar un ejemplo
         }
         
 
@@ -71,13 +74,17 @@ public class SistemaSIU {
         for (Alumno alumnoADesinscribir : alumnosADesinscribir){ // este for se va a hacer cantidadDeInscriptos() veces.
             alumnoADesinscribir.desinscribirDeMateria();
         }
+        //primero entro a la carrera principal
+        // luego busco la materia y de ahí obtengo mi infomateria y las distintas carreras en las que esta
+         // O(|c| + O(1) + O|m|) = O(|c| + |m|)
+        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria();
+        ArrayList<MateriaParaCarrera> carrerasAEditar = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).carrerasInscriptas(); // O(|c| + |m|)
+        for (MateriaParaCarrera carre : carrerasAEditar){
+                carre.getCarrera().getMaterias().eliminar(carre.getMateria());
 
-        InfoMateria infoMateria = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getInfoMateria(); // O(|c| + O(1) + O|m|) = O(|c| + |m|)
-        
-        for (ParCarreraMateria par : infoMateria.getParesCarreraMateria()){ // O(# ParesCarreraMateria)
-            carrerasTrie.buscar(par.getNombreCarrera()).getMaterias().eliminar(materia);
-        }
-
+                 // el error estaba en "materia". Hía que poner par.getNombreMateria
+            }
+        // y si en vez de por cada ParCarreraMateria, solo lo hacemos con las carreras de la materia.
     }
 
     public int inscriptos(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)

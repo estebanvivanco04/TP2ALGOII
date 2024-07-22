@@ -59,6 +59,7 @@ public class Trie<T>{
         for (int i = 0; i < 256; i++){// O(256) = O(1)
             if (actual.getHijos().get(i) != null){
                 todosHijosNulos = false;
+                break;
             }
         }
 
@@ -66,7 +67,7 @@ public class Trie<T>{
             actual.setInfo(null);
         }else{
             // seteo la posicion de actual en la lista de hijos del padre como null
-            char caracter = actual.getLetra().toCharArray()[0];
+            char caracter = actual.getLetra().charAt(0);
             int ascii = (int) caracter;
             actual.getpadre().getHijos().set(ascii, null);
 
@@ -77,20 +78,21 @@ public class Trie<T>{
     }
 
     private void borrarHaciaArribaRecursivo (NodoTrie<T> actual){
-        boolean todosHijosNulos = false;
+        boolean todosHijosNulos = true;
 
         for (int i = 0; i < 256; i++){// O(256) = O(1)
-            if (actual.getHijos().get(i) == null){
-                todosHijosNulos = true;
+            if (actual.getHijos().get(i) != null){
+                todosHijosNulos = false;
+                break;
             }
         }
 
         if(todosHijosNulos == false){// si actual tiene al menos 1 hijo no nulo, no hago nada
             return;
         }else{
-            if(actual.getLetra() != ""){// si actual es la raíz me detengo
+            if(actual.getpadre() != null && !actual.getLetra().isEmpty()){// si actual es la raíz me detengo
                 // seteo la posicion de actual en la lista de hijos del padre como null
-                char caracter = actual.getLetra().toCharArray()[0];
+                char caracter = actual.getLetra().charAt(0);
                 int ascii = (int) caracter;
                 actual.getpadre().getHijos().set(ascii, null);
 
