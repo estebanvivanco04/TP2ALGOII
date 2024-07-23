@@ -36,7 +36,6 @@ public class SistemaSIU {
                 }
                 carrerasTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);
                 MateriaParaCarrera mateParaCarre = new MateriaParaCarrera(carrerasTrie.buscar(nombreCarrera), nombreMateria);
-                // Agrego la materia a la carrera y la carrera a la materia
                 carrerasTrie.buscar(nombreCarrera).getMaterias().buscar(nombreMateria).getCarreras().add(mateParaCarre);
             }
                 
