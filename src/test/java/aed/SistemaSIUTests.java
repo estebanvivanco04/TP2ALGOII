@@ -23,6 +23,17 @@ public class SistemaSIUTests {
         estudiantes = new String[] {"123/23", "321/24", "122/99", "314/81", "391/18", "478/19", "942/20", "291/18", "382/19", "892/22", "658/13", "217/12", "371/11", "294/20"};
     }
 
+    // @BeforeEach
+    // void initSimple() {
+    //     infoMaterias = new InfoMateria[] {
+    //         new InfoMateria(new ParCarreraMateria[] {new ParCarreraMateria("Compu", "IP"), new ParCarreraMateria("Datos", "AED1")}),
+    //         new InfoMateria(new ParCarreraMateria[] {new ParCarreraMateria("Compu", "Algo"), new ParCarreraMateria("Datos", "AED2")}),
+    //         new InfoMateria(new ParCarreraMateria[] {new ParCarreraMateria("Compu", "TDA"), new ParCarreraMateria("Datos", "AED3")}),
+    //         new InfoMateria(new ParCarreraMateria[] {new ParCarreraMateria("Compu", "Análisis I"), new ParCarreraMateria("Datos", "Análisis I")})
+    //     };
+    //     estudiantes = new String[] {"123/23", "321/24", "122/99", "314/81", "391/18", "478/19", "942/20", "291/18", "382/19", "892/22", "658/13", "217/12", "371/11", "294/20"};
+    // }
+
     @Test
     void nuevo_sistema() {
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
@@ -52,6 +63,20 @@ public class SistemaSIUTests {
         sistema.inscribir(estudiantes[11], "Ciencias de Datos", "Algoritmos3");
         sistema.inscribir(estudiantes[11], "Ciencias Matemáticas", "Análisis II");
     }
+
+    // void realizar_inscripciones_simple(SistemaSIU sistema){
+    //     sistema.inscribir(estudiantes[0], "Datos", "AED1");
+    //     sistema.inscribir(estudiantes[0], "Datos", "Análisis I");
+    //     sistema.inscribir(estudiantes[1], "Compu", "IP");
+    //     sistema.inscribir(estudiantes[1], "Compu", "Análisis I");
+    //     sistema.inscribir(estudiantes[2], "Datos", "AED2");
+    //     sistema.inscribir(estudiantes[2], "Compu", "TDA");
+    //     sistema.inscribir(estudiantes[7], "Compu", "TDA");
+    //     sistema.inscribir(estudiantes[8], "Compu", "IP");
+    //     sistema.inscribir(estudiantes[9], "Compu", "Algo");
+    //     sistema.inscribir(estudiantes[10], "Datos", "AED2");
+    //     sistema.inscribir(estudiantes[11], "Datos", "AED3");
+    // }
 
     @Test
     void inscribir_estudiantes(){
@@ -121,6 +146,41 @@ public class SistemaSIUTests {
             }
         }
     }
+
+    // void cargar_docentes_simple(SistemaSIU sistema, int ay2, int ay1, int jtps, int profes){
+    //     for (int i = 0; i < ay2; i++){
+    //         sistema.agregarDocente(SistemaSIU.CargoDocente.AY2, "Datos", "AED1");
+    //         if (i % 2 == 0){
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.AY2, "Compu", "Algo");
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.AY2, "Datos", "AED3");
+    //         }
+    //     }
+
+    //     for (int i = 0; i < ay1; i++){
+    //         sistema.agregarDocente(SistemaSIU.CargoDocente.AY1, "Datos", "AED2");
+    //         sistema.agregarDocente(SistemaSIU.CargoDocente.AY1, "Compu", "TDA");
+    //         if (i % 2 == 0){
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.AY1, "Compu", "IP");
+    //         }
+    //     }
+
+    //     for (int i = 0; i < jtps; i++){
+    //         sistema.agregarDocente(SistemaSIU.CargoDocente.JTP, "Datos", "AED3");
+    //         if (i % 2 == 0){
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.JTP, "Compu", "TDA");
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.JTP, "Compu", "Algo");
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.JTP, "Compu", "IP");
+    //         }
+    //     }
+
+    //     for (int i = 0; i < profes; i++){
+    //         sistema.agregarDocente(SistemaSIU.CargoDocente.PROF, "Compu", "Análisis I");
+    //         sistema.agregarDocente(SistemaSIU.CargoDocente.PROF, "Compu", "IP");
+    //         if (i % 2 == 0){
+    //             sistema.agregarDocente(SistemaSIU.CargoDocente.PROF, "Datos", "AED2");
+    //         }
+    //     }
+    // }
 
     @Test
     void agregar_docentes(){
@@ -270,6 +330,16 @@ public class SistemaSIUTests {
 
     @Test
     void cerrar_facultad(){
+        // SistemaSIU sistemaSimple = new SistemaSIU(infoMaterias, estudiantes);
+        // realizar_inscripciones_simple(sistemaSimple);
+        // cargar_docentes_simple(sistemaSimple, 20, 10, 5, 2);
+        // sistemaSimple.cerrarMateria("IP", "Compu");
+        // String[] materiasCompu = new String[] {"Algo", "Análisis I","TDA"};
+        // assertArrayEquals(materiasCompu, sistemaSimple.materias("Compu"));
+
+
+
+
         SistemaSIU sistema = new SistemaSIU(infoMaterias, estudiantes);
         realizar_inscripciones(sistema);
         cargar_docentes(sistema, 20, 10, 5, 2);
@@ -312,4 +382,6 @@ public class SistemaSIUTests {
         String[] carreras = new String[] {"Ciencias Biológicas", "Ciencias Físicas", "Ciencias Matemáticas", "Ciencias Químicas", "Ciencias de Datos", "Ciencias de la Computación"};
         assertArrayEquals(carreras, sistema.carreras());
     }
+
+
 }

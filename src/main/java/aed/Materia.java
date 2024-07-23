@@ -8,17 +8,15 @@ public class Materia {
     private int cupo;
     private int[] docentes;
     private int cantInscriptos;
-    private InfoMateria infoMateria;
     private ArrayList<Alumno> alumnosInscriptos;
-    private ArrayList<MateriaParaCarrera> carrerasInscriptas;
+    private ArrayList<MateriaParaCarrera> carrerasDeLaMateria;
     
     public Materia(int cupo, int[] docentes, int cantInscriptos, InfoMateria infoMaterias) {
         this.cupo = cupo;
         this.docentes = docentes;
         this.cantInscriptos = cantInscriptos;
-        this.infoMateria = infoMaterias;
         this.alumnosInscriptos = new ArrayList<Alumno>();
-        this.carrerasInscriptas = new ArrayList<MateriaParaCarrera>();
+        this.carrerasDeLaMateria = new ArrayList<MateriaParaCarrera>();
     }
     
     public int getCupo() {
@@ -40,13 +38,9 @@ public class Materia {
     public void restarInscripto() {
         cantInscriptos -= 1;
     }
-
-    public InfoMateria getInfoMateria() {
-        return  this.infoMateria;
-    }
     
-    public ArrayList<MateriaParaCarrera> carrerasInscriptas(){
-        return carrerasInscriptas; 
+    public ArrayList<MateriaParaCarrera> getCarreras(){
+        return carrerasDeLaMateria; 
     }
 
     public int calcularCupo(){// O(1)

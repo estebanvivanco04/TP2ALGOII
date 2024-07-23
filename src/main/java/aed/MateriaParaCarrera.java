@@ -12,6 +12,7 @@ public class MateriaParaCarrera {
     public Carrera getCarrera(){
         return carrera;
     }
+    
     public String getMateria(){
         return materia;
     }
