@@ -65,6 +65,7 @@ public class Trie<T>{
 
         if(todosHijosNulos == false){ // si actual tiene al menos 1 hijo no nulo, solo le quito la info
             actual.setInfo(null);
+            actual.setFinDePalabra(false);
         }else{
             // seteo la posicion de actual en la lista de hijos del padre como null
             char caracter = actual.getLetra().charAt(0);
