@@ -29,14 +29,14 @@ public class SistemaSIU {
                 String nombreCarrera = par.getNombreCarrera();
                 String nombreMateria = par.getNombreMateria();
                 Carrera nuevaCarrera = new Carrera(nombreCarrera);
-                MateriaParaCarrera mateParaCarre = new MateriaParaCarrera(nuevaCarrera, nombreMateria);
+                
                 // si la carrera todavía no existe, la creo
                 if (carrerasTrie.buscar(nombreCarrera) == null){// 
                     carrerasTrie.agregar(nombreCarrera, nuevaCarrera);
                 }
-                
-                // Agrego la materia a la carrera y la carrera a la materia
                 carrerasTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);
+                MateriaParaCarrera mateParaCarre = new MateriaParaCarrera(carrerasTrie.buscar(nombreCarrera), nombreMateria);
+                // Agrego la materia a la carrera y la carrera a la materia
                 carrerasTrie.buscar(nombreCarrera).getMaterias().buscar(nombreMateria).getCarreras().add(mateParaCarre);
             }
                 
