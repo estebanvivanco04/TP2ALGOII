@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class SistemaSIU {
 
-    private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno. Buscar en este trie es O(1) porque las claves son acotadas
+    private Trie<Alumno> libretasTrie; // cada rama es una LU que lleva a un objeto de tipo Alumno. Buscar, agregar y eliminar en este Trie es O(1) porque las claves son acotadas
     private Trie<Carrera> carrerasTrie;// cada rama es el nombre de una carrera que lleva a un objeto de tipo Carrera.
 
     enum CargoDocente{
@@ -15,39 +15,47 @@ public class SistemaSIU {
         AY2
     }
 
+
     
-    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
+    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){ // O(\sum de (|c| * |Mc|) por cada c en C  +  \sum de (\sum de |n| por cada n en Nm) por cada m en M + E)
         carrerasTrie = new Trie<Carrera>();
         libretasTrie = new Trie<Alumno>();
-        for (InfoMateria InfoMateria : infoMaterias){
+        for (InfoMateria InfoMateria : infoMaterias){// #iteraciones = #materiasDistintas
             int[] plantelDocenteInicial = new int[4];
 
             // creo la materia con la infoMateria correspondiente
             Materia materia = new Materia(0, plantelDocenteInicial, 0, InfoMateria);
 
-            for (ParCarreraMateria par : InfoMateria.getParesCarreraMateria()){
+            for (ParCarreraMateria par : InfoMateria.getParesCarreraMateria()){// #iteraciones = #nombresDeLaMateria
                 String nombreCarrera = par.getNombreCarrera();
                 String nombreMateria = par.getNombreMateria();
                 Carrera nuevaCarrera = new Carrera(nombreCarrera);
                 
                 // si la carrera todavía no existe, la creo
-                if (carrerasTrie.buscar(nombreCarrera) == null){// 
-                    carrerasTrie.agregar(nombreCarrera, nuevaCarrera);
+                if (carrerasTrie.buscar(nombreCarrera) == null){ // este if se va a ejecutar #carreras veces
+                    carrerasTrie.agregar(nombreCarrera, nuevaCarrera);// O(|c|)
                 }
-                carrerasTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);
-                MateriaParaCarrera mateParaCarre = new MateriaParaCarrera(carrerasTrie.buscar(nombreCarrera), nombreMateria);
-                carrerasTrie.buscar(nombreCarrera).getMaterias().buscar(nombreMateria).getCarreras().add(mateParaCarre);
+                carrerasTrie.buscar(nombreCarrera).getMaterias().agregar(nombreMateria, materia);// O(|c| + 1 + |n|) = O(|c| + |n|)
+                MateriaParaCarrera mateParaCarre = new MateriaParaCarrera(carrerasTrie.buscar(nombreCarrera), nombreMateria);// O(|c|)
+                carrerasTrie.buscar(nombreCarrera).getMaterias().buscar(nombreMateria).getCarreras().add(mateParaCarre);// O(|c| + 1 + |n| + 1 + 1) = O(|c| + |n|)
             }
                 
                 // Como a todos los pares les agrego el mismo objeto "materia", 
                 // lo que le ocurra a "Algoritmos1" en "Ciencias de Datos"
                 // también le va a ocurrir a "Intro a la Programación" en "Ciencias de la Computación", por dar un ejemplo
         }
-        
+        // La línea 35 se va a ejecutar #carreras veces independientemente de lo for's ya que sólo agrega
+        // la carrera al Trie de carreras si no existe previamente. Como busca la carrera y ocasionalmente la agrega,
+        // la complejidad de este paso es O(\sum de |c| por cada c en C)
 
-        for (String libreta : libretasUniversitarias){
+        //  Línea 37: agregamos la Materia al Trie de materias de la Carrera, esto se va a ejecutar una vez por cada materia de cada carrera
+        //  Línea 39: agregamos el MateriaParaCarrera en "carrerasDeLaMateria" de la Materia, esto se va a ejecutar una vez por cada nombre de cada materia
+        // Como la cantidad de nombres de todas las materias es igual a la cantidad de materias de todas las carreras, la complejidad resulta
+        // O(\sum de (|c| * |Mc|) por cada c en C  +  \sum de (\sum de |n| por cada n en Nm) por cada m en M )
+
+        for (String libreta : libretasUniversitarias){ // #iteraciones = E
             Alumno alumno = new Alumno(libreta, 0);
-            this.libretasTrie.agregar(libreta, alumno);
+            this.libretasTrie.agregar(libreta, alumno);// O(1)
         }
     }
 
@@ -57,37 +65,50 @@ public class SistemaSIU {
         libretasTrie.buscar(estudiante).inscribirAMateria(carrera, materia, carrerasTrie);
     }
 
+
+
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){ // O(1 + |c| + 1 + |m| + 1) = O(|c| + |m|)
         carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes()[cargo.ordinal()] += 1;
     }
+
+
 
     public int[] plantelDocente(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
         return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
     }
 
-    public void cerrarMateria(String materia, String carrera){
 
-        ArrayList<Alumno> alumnosADesinscribir = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos(); // O(|c| + 1 + |m| + 1) = O(|n| + |m|)
 
-        for (Alumno alumnoADesinscribir : alumnosADesinscribir){ // este for se va a hacer cantidadDeInscriptos() veces.
-            alumnoADesinscribir.desinscribirDeMateria();
+    public void cerrarMateria(String materia, String carrera){ // O(|c| + |m| + \sum de |n| por cada n en Nm + Em)
+
+        ArrayList<Alumno> alumnosADesinscribir = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getAlumnosInscriptos(); // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
+
+        for (Alumno alumnoADesinscribir : alumnosADesinscribir){ //#iteraciones = Materia.getCantInscriptos() = Em
+            alumnoADesinscribir.desinscribirDeMateria(); // O(1)
         }
-        //primero entro a la carrera principal
-        // luego busco la materia y de ahí obtengo las distintas carreras en las que esta
-         // O(|c| + O(1) + O|m|) = O(|c| + |m|)
-        ArrayList<MateriaParaCarrera> carrerasAEditar = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCarreras(); // O(|c| + |m|)
-        for (MateriaParaCarrera carre : carrerasAEditar){
-                carre.getCarrera().getMaterias().eliminar(carre.getMateria());
+
+        // Primero accedo a la carrera que se pasó como input,
+        // luego busco la materia y de ahí obtengo las distintas carreras en las que está
+        ArrayList<MateriaParaCarrera> carrerasAEditar = carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCarreras(); // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
+
+        for (MateriaParaCarrera carre : carrerasAEditar){ // #iteraciones = Materia.getCarreras().size(), esto  es igual a \sum de 1 por cada n en Nm
+                carre.getCarrera().getMaterias().eliminar(carre.getMateria()); // O(1 + 1 + 1 + |n|) = O(|n|)
         }
     }
+
+
 
     public int inscriptos(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
         return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos();    
     }
 
+
+
     public boolean excedeCupo(String materia, String carrera){ // O(2 * (|c| + 1 |m| + 1)) = O(|c| + |m|)
         return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
     }
+
+
 
     public String[] carreras(){ // O(1 + 1 + x + 1) = O()
         ArrayList<String> listaCarreras = new ArrayList<String>();
@@ -117,6 +138,8 @@ public class SistemaSIU {
     // inOrderCarrerasRecursivo() en su totalidad se va a ejecutar en O(# de hijos de todos los nodos no nulos del Trie)
     // como cada nodo tiene 256 hijos, es lo mismo que decir en O(256 * #nodos no nulos del Trie) = O(#nodos no nulos del Trie) 
     // por lo que en el peor caso es O(sumatoria de las longitudes de todos los nombres definidos en el Trie)
+    // que es igual a o(sum de |mc| por cada mc en Mc)
+
 
 
     public String[] materias(String carrera){
@@ -145,6 +168,8 @@ public class SistemaSIU {
              }
          }
     }
+
+
 
     public int materiasInscriptas(String estudiante){ // O(1 + 1) = O(1)
         return libretasTrie.buscar(estudiante).getCantMat();

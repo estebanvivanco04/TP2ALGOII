@@ -1,6 +1,5 @@
 package aed;
 
-//InvRep: |paresCarreraMateria| > 0
 
 public class InfoMateria{
 

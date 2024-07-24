@@ -1,6 +1,5 @@
 package aed;
 
-//InvRep: |carrera| > 0 && |materia| > 0
 
 public class ParCarreraMateria {
     String carrera;
