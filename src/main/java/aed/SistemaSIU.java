@@ -67,6 +67,12 @@ public class SistemaSIU {
 
 
 
+    public int inscriptos(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos();    
+    }
+
+
+
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){ // O(1 + |c| + 1 + |m| + 1) = O(|c| + |m|)
         carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes()[cargo.ordinal()] += 1;
     }
@@ -75,6 +81,85 @@ public class SistemaSIU {
 
     public int[] plantelDocente(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
         return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getDocentes();
+    }
+
+
+
+    public boolean excedeCupo(String materia, String carrera){ // O(2 * (|c| + 1 |m| + 1)) = O(|c| + |m|)
+        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
+    }
+
+
+
+    public String[] carreras(){ // O(1 + 1 + sum de |c| por cada c en C + 1) = O(sum de |c| por cada c en C)
+        ArrayList<String> listaCarreras = new ArrayList<String>();
+        NodoTrie<Carrera> actual = carrerasTrie.getRaiz();
+
+        inOrderCarrerasRecursivo(listaCarreras, actual);
+
+        return listaCarreras.toArray(new String[0]);
+    }
+
+    private void inOrderCarrerasRecursivo(ArrayList<String> listaCarreras, NodoTrie<Carrera> actual){// O(sum de |c| por cada c en C)
+
+        for (int i = 0; i < 256; i++){
+
+           if(actual.getHijos().get(i) != null){ // si el i-ésimo hijo de actual no es null, chequeo esFinPalabra y llamo a la función con este mismo hijo
+
+                if(actual.getHijos().get(i).esFinPalabra()){ // esFinPalabra() == true <-> el i-ésimo hijo "apunta" a un objeto de tipo Carrera
+                    listaCarreras.add(actual.getHijos().get(i).getInfo().getNombreCarrera()); // agrego el nombre de la carrera a la lista: O(1)
+                }
+
+                inOrderCarrerasRecursivo(listaCarreras, actual.getHijos().get(i)); // si todos los hijos son null, entonces este hijo es una hoja
+                                                                                   // y este llamado de función se va a ejecutar en O(256) = O(1)
+            }
+
+        }
+    }
+    // inOrderCarrerasRecursivo() en su totalidad se va a ejecutar en O(# de hijos de todos los nodos no nulos del Trie).
+    // Como cada nodo tiene 256 hijos, es lo mismo que decir en O(256 * #nodos no nulos del Trie) = O(#nodos no nulos del Trie) 
+    // por lo que en el peor caso es O(sumatoria de las longitudes de todos los nombres definidos en el Trie)
+    // que es igual a O(\sum de |c| por cada c en C)
+
+
+
+    public String[] materias(String carrera){ // O(|c| + \sum de |mc|  por cada mc en Mc)
+        ArrayList<String> listaMaterias = new ArrayList<String>();
+        NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz(); // O(|c| + 1 + 1) = O(|c|)
+
+        inOrderMateriasRecursivo(listaMaterias, actual, actual.getLetra());
+
+        return listaMaterias.toArray(new String[0]); // O(\sum de 1 por cada mc en Mc)
+    }
+
+    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String nombreMateria){ // O(sum de |mc| por cada mc en Mc)
+
+        for (int i = 0; i < 256; i++){
+
+            if(actual.getHijos().get(i) != null){  // si el i-ésimo hijo de actual no es null, comienzo a formar o sigo formando el nombre de la materia,
+                                                   // , luego chequeo esFinPalabra y llamo a la función con este mismo hijo.
+                String nombre = new String();
+                nombre = nombreMateria + actual.getHijos().get(i).getLetra();
+
+                 if(actual.getHijos().get(i).esFinPalabra()){ // esFinPalabra() == true <-> el i-ésimo hijo "apunta" a un objeto de tipo Materia
+                    listaMaterias.add(nombre); // agrego el nombre de la materia a la lista: O(1)
+                 }
+ 
+                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i), nombre); // si todos los hijos son null, entonces este hijo es una hoja
+                                                                                            // y este llamado de función se va a ejecutar en O(256) = O(1)
+                                                                                    
+             }
+         }
+    }
+    // inOrderMateriasasRecursivo() en su totalidad se va a ejecutar en O(# de hijos de todos los nodos no nulos del Trie).
+    // Como cada nodo tiene 256 hijos, es lo mismo que decir en O(256 * #nodos no nulos del Trie) = O(#nodos no nulos del Trie) 
+    // por lo que en el peor caso es O(sumatoria de las longitudes de todos los nombres definidos en el Trie)
+    // que es igual a O(sum de |mc| por cada mc en Mc)
+
+
+
+    public int materiasInscriptas(String estudiante){ // O(1 + 1) = O(1)
+        return libretasTrie.buscar(estudiante).getCantMat();
     }
 
 
@@ -95,84 +180,4 @@ public class SistemaSIU {
                 carre.getCarrera().getMaterias().eliminar(carre.getMateria()); // O(1 + 1 + 1 + |n|) = O(|n|)
         }
     }
-
-
-
-    public int inscriptos(String materia, String carrera){ // O(|c| + 1 + |m| + 1) = O(|c| + |m|)
-        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos();    
-    }
-
-
-
-    public boolean excedeCupo(String materia, String carrera){ // O(2 * (|c| + 1 |m| + 1)) = O(|c| + |m|)
-        return carrerasTrie.buscar(carrera).getMaterias().buscar(materia).getCantInscriptos() > carrerasTrie.buscar(carrera).getMaterias().buscar(materia).calcularCupo(); // La especificación no coincide con lo que esperan los tests
-    }
-
-
-
-    public String[] carreras(){ // O(1 + 1 + x + 1) = O()
-        ArrayList<String> listaCarreras = new ArrayList<String>();
-        NodoTrie<Carrera> actual = carrerasTrie.getRaiz();
-
-        inOrderCarrerasRecursivo(listaCarreras, actual);
-
-        return listaCarreras.toArray(new String[0]);
-    }
-
-    private void inOrderCarrerasRecursivo(ArrayList<String> listaCarreras, NodoTrie<Carrera> actual){
-
-        for (int i = 0; i < 256; i++){
-
-           if(actual.getHijos().get(i) != null){ // si el i-ésimo hijo de actual no es null, chequeo esFinPalabra y llamo a la función con este mismo hijo
-
-                if(actual.getHijos().get(i).esFinPalabra()){ // esFinPalabra() == true <-> el i-ésimo hijo "apunta" a un objeto de tipo Carrera
-                    listaCarreras.add(actual.getHijos().get(i).getInfo().getNombreCarrera()); // agrego el nombre de la carrera a la lista: O(1)
-                }
-
-                inOrderCarrerasRecursivo(listaCarreras, actual.getHijos().get(i)); // si todos los hijos son null, entonces este hijo es una hoja
-                                                                                   // y este llamado de función se va a ejecutar en O(256) = O(1)
-            }
-
-        }
-    }
-    // inOrderCarrerasRecursivo() en su totalidad se va a ejecutar en O(# de hijos de todos los nodos no nulos del Trie)
-    // como cada nodo tiene 256 hijos, es lo mismo que decir en O(256 * #nodos no nulos del Trie) = O(#nodos no nulos del Trie) 
-    // por lo que en el peor caso es O(sumatoria de las longitudes de todos los nombres definidos en el Trie)
-    // que es igual a o(sum de |mc| por cada mc en Mc)
-
-
-
-    public String[] materias(String carrera){
-        ArrayList<String> listaMaterias = new ArrayList<String>();
-        NodoTrie<Materia> actual = carrerasTrie.buscar(carrera).getMaterias().getRaiz(); // O(|c| + 1 + 1) = O(|c|)
-
-        inOrderMateriasRecursivo(listaMaterias, actual, actual.getLetra());
-
-        return listaMaterias.toArray(new String[0]);	    
-    }
-
-    private void inOrderMateriasRecursivo(ArrayList<String> listaMaterias, NodoTrie<Materia> actual, String nombreMateria){
-
-        for (int i = 0; i < 256; i++){
-
-            if(actual.getHijos().get(i) != null){
-                String nombre = new String();
-                nombre = nombreMateria + actual.getHijos().get(i).getLetra();
-
-                 if(actual.getHijos().get(i).esFinPalabra()){
-                    listaMaterias.add(nombre);
-                 }
- 
-                 inOrderMateriasRecursivo(listaMaterias, actual.getHijos().get(i), nombre);
-                                                                                    
-             }
-         }
-    }
-
-
-
-    public int materiasInscriptas(String estudiante){ // O(1 + 1) = O(1)
-        return libretasTrie.buscar(estudiante).getCantMat();
-    }
-
 }
